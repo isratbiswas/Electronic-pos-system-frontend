@@ -39,7 +39,7 @@ export default function RootLayout({
         <div className="min-h-dvh">
           {children}
         </div>
-        <Toaster position="bottom-right" richColors/>
+        <Toaster position="top-center" richColors/>
          <Suspense fallback={null}>
           <LoginSuccessToast />
            <LogoutSuccessToast/>

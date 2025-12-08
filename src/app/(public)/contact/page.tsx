@@ -1,3 +1,4 @@
+import Contact from "@/components/PublicPage/Contact/Contact";
 
 
 
@@ -5,7 +6,7 @@
 const ContactPage = () => {
     return (
         <div>
-            <h1>Contact</h1>
+            <Contact/>
         </div>
     );
 };

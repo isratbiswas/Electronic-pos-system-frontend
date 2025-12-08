@@ -1,10 +1,11 @@
+import Features from "@/components/PublicPage/Features/Features";
 
 
 
 const FeaturesPage = () => {
     return (
         <div>
-            <h1>Features</h1> 
+          <Features/>
         </div>
     );
 };

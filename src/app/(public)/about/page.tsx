@@ -1,9 +1,10 @@
+import About from "@/components/PublicPage/About/About";
 
 
 const AboutPage = () => {
     return (
         <div>
-            <h2>About Page</h2>
+            <About/>
         </div>
     );
 };
