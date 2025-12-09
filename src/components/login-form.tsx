@@ -111,8 +111,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
               </Field>
 
               <FieldDescription className="text-center text-slate-400 mt-2">
-                Don&apos;t have an account?
-                <Link href="/register" className="text-indigo-400">
+                Don&apos;t have an account?{" "}
+                <Link href="/register" className="text-indigo-400 hover:text-red-800 transition-colors">
                   Sign up
                 </Link>
               </FieldDescription>

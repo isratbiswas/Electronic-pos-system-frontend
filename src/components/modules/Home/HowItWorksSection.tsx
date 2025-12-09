@@ -1,57 +1,61 @@
-import React from 'react';
+"use client";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
-const HowItWorksSection = () => {
-    return (
-    <section className="py-16 px-6 bg-gray-50" id="how-it-works">
-  <div className="max-w-6xl mx-auto text-center mb-12">
-    <h2 className="text-3xl font-bold text-green-600">How It Works</h2>
-    <p className="text-gray-600 mt-3">
-      Get started with your POS system in just a few simple steps.
-    </p>
-  </div>
+const steps = [
+  { icon: "📝", title: "Create Account", description: "Sign up and set up your store details within minutes." },
+  { icon: "📦", title: "Add Products", description: "Upload your items with stock, pricing, discounts & barcode." },
+  { icon: "💳", title: "Start Selling", description: "Process orders, apply discounts, and accept payments instantly." },
+  { icon: "📊", title: "Track Reports", description: "Monitor daily sales, profits, stock levels & performance analytics." }
+];
 
-  <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+export default function HowItWorksSection() {
+  const [hovered, setHovered] = useState<number | null>(null);
 
-    {/* Step 1 */}
-    <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition text-center">
-      <div className="text-5xl mb-4">📝</div>
-      <h3 className="text-xl font-semibold mb-2">1. Create Account</h3>
-      <p className="text-gray-600">
-        Sign up and set up your store details within minutes.
-      </p>
-    </div>
+  return (
+    <section className="py-24 px-6 md:px-12 lg:px-20 bg-slate-950" id="how-it-works">
+      <div className="max-w-6xl mx-auto text-center mb-16">
+        <h2 className="text-3xl sm:text-4xl font-bold text-indigo-400">How It Works</h2>
+        <p className="text-slate-400 mt-3 max-w-2xl mx-auto">
+          Get started with your POS system in just a few simple steps.
+        </p>
+      </div>
 
-    {/* Step 2 */}
-    <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition text-center">
-      <div className="text-5xl mb-4">📦</div>
-      <h3 className="text-xl font-semibold mb-2">2. Add Products</h3>
-      <p className="text-gray-600">
-        Upload your items with stock, pricing, discounts & barcode.
-      </p>
-    </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 max-w-6xl mx-auto">
+        {steps.map((step, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: i * 0.2 }}
+            onHoverStart={() => setHovered(i)}
+            onHoverEnd={() => setHovered(null)}
+            className="relative flex items-center justify-center text-center w-64 h-64 mx-auto rounded-full overflow-hidden cursor-pointer"
+          >
+            {/* Thicker, bright animated border */}
+            {hovered === i && (
+              <motion.div
+                className="absolute inset-0 rounded-full pointer-events-none"
+                style={{
+                  border: "12px solid transparent", // thicker border
+                  borderImageSlice: 1,
+                  borderImageSource: "conic-gradient(from 0deg, #a855f7, #ec4899, #f472b6, #a855f7)"
+                }}
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+              />
+            )}
 
-    {/* Step 3 */}
-    <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition text-center">
-      <div className="text-5xl mb-4">💳</div>
-      <h3 className="text-xl font-semibold mb-2">3. Start Selling</h3>
-      <p className="text-gray-600">
-        Process orders, apply discounts, and accept payments instantly.
-      </p>
-    </div>
-
-    {/* Step 4 */}
-    <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition text-center">
-      <div className="text-5xl mb-4">📊</div>
-      <h3 className="text-xl font-semibold mb-2">4. Track Reports</h3>
-      <p className="text-gray-600">
-        Monitor daily sales, profits, stock levels & performance analytics.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-    );
-};
-
-export default HowItWorksSection;
+            {/* Inner static circle */}
+            <div className="relative z-10 flex flex-col items-center justify-center w-full h-full rounded-full bg-slate-900 p-6">
+              <div className="text-6xl mb-4">{step.icon}</div>
+              <h3 className="text-xl font-semibold mb-2 text-white">{step.title}</h3>
+              <p className="text-slate-400 text-sm">{step.description}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}

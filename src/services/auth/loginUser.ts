@@ -57,7 +57,7 @@ export const loginUser =async(_currentState: any, formData: any) :Promise<any> =
         }
 
         await setCookie("accessToken", accessTokenObject.accessToken,{
-            secure: false,
+            secure: true,
             httpOnly:true,
             maxAge: parseInt(accessTokenObject['Max-Age']) || 1000 * 60 * 60,
             path: accessTokenObject.Path || "/",
@@ -65,7 +65,7 @@ export const loginUser =async(_currentState: any, formData: any) :Promise<any> =
         })
 
         await setCookie("refreshToken", refreshTokenObject.refreshToken, {
-            secure: false,
+            secure: true,
             httpOnly: true,
             maxAge: parseInt(refreshTokenObject['Max-Age']) || 1000 * 60 * 60 * 24 * 90,
             path: refreshTokenObject.Path || "/",
