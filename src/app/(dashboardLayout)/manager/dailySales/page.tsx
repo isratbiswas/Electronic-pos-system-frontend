@@ -1,4 +1,5 @@
 import DailySale from "@/components/modules/sales/DailySale";
+import DailySalesAreaChart from "@/components/modules/salesChart/DailySalesLineChart";
 import { getDailySales } from "@/services/admin/salesReport";
 
 
@@ -9,6 +10,7 @@ const DailySalePage = async() => {
     return (
         <div>
             <DailySale dailySales={dailySales}/>
+            <DailySalesAreaChart data={dailySales}/>
         </div>
     );
 };

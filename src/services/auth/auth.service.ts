@@ -74,7 +74,7 @@ export async function getNewAccessToken () {
         await setCookie("accessToken", accessTokenObject.accessToken, {
             secure: true,
             httpOnly: true,
-             maxAge: parseInt(accessTokenObject['Max-Age']) || 1000 * 60 * 60,
+             maxAge: parseInt(accessTokenObject['Max-Age']) || 1000 * 60 * 60 *24 * 30,
             path: accessTokenObject.Path || "/",
             sameSite: accessTokenObject['SameSite'] || "none",
         })

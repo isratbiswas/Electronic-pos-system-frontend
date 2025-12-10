@@ -31,3 +31,8 @@ export interface IDailySales{
     totalSales: number;
     orders:number
 }
+export interface IMonthlySales{
+     date: string;
+    totalSales: number;
+    orders:number
+}
