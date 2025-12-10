@@ -18,21 +18,14 @@ export const createProduct = async(_prevState: any, formData:FormData) : Promise
          productAvailable:formData.get("productAvailable"),
          barcode: formData.get("barcode")
     }
-    console.log(payload, "product-1");
+    // console.log(payload, "product-1");
 
       if (zodValidator(payload, productValidationZodSchema).success === false) {
                 return zodValidator(payload,productValidationZodSchema);
             }
 
      const validatedPayload = zodValidator(payload, productValidationZodSchema).data;
-    //   if (!validatedPayload?.success && validatedPayload?.errors) {
-    //     return {
-    //         success: false,
-    //         message: "Validation failed",
-    //         formData: payload,
-    //         errors: validatedPayload.errors,
-    //     }
-    // }
+   
     console.log(validatedPayload, "product-2");
      const res = await serverFetch.post("/product/create-product",{
         body: JSON.stringify(validatedPayload),
@@ -42,7 +35,7 @@ export const createProduct = async(_prevState: any, formData:FormData) : Promise
      })
 
      const result = await res.json()
-     console.log(result, "product-3");
+    //  console.log(result, "product-3");
     
  }catch (error: any) {
         console.log(error);
@@ -83,7 +76,7 @@ export  const updateProducts = async(id:string,payload: Partial<IProduct>) =>{
             body: JSON.stringify(payload)
         })
         const result = await response.json();
-        console.log(result, "updated");
+        // console.log(result, "updated");
         return result;
     } catch (error: any) {
         console.log(error);
@@ -97,6 +90,7 @@ export  const deleteProduct = async(id:string) =>{
     try {
         const response = await serverFetch.delete(`/product/${id}`)
         const result = await response.json();
+        console.log(result, "deletedsuc");
         return result;
     } catch (error: any) {
         console.log(error);

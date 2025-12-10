@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IProduct } from "@/types/product";
 import { Skeleton } from "@/components/ui/skeleton";
 import ActionButton from "@/components/ui/ActionButton";
 import ViewProductModal from "../products/ViewProductModal";
 import EditProductModal from "../products/EditProductModal";
 import { deleteProduct } from "@/services/admin/productManagement";
+import { toast } from "sonner";
+import DeleteConfirmDialog from "../products/DeleteProduct";
+
 
 
 interface Props {
@@ -16,8 +19,15 @@ interface Props {
 
 const AllProduct = ({ products = [], loading = false }: Props) => {
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+  const [productList, setProductList] = useState<IProduct[]>([]);
   const [modalType, setModalType] = useState<"view" | "edit" | null>(null);
+    // ✅ Delete states
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
+  useEffect(() =>{
+    setProductList(products)
+  },[products])
   const handleView = (product: IProduct) => {
     setSelectedProduct(product);
     setModalType("view");
@@ -28,19 +38,32 @@ const AllProduct = ({ products = [], loading = false }: Props) => {
     setModalType("edit");
   };
 
-  const handleDelete = async (id: string) => {
-    const confirmDelete = confirm("Are you sure you want to delete?");
-    if (!confirmDelete) return;
-    try {
-      console.log("Deleting product:", id);
-      const result = await deleteProduct(id);
-      if(result.success){
-        
-      }
-    } catch (error) {
-      console.error(error);
+  // ✅ FINAL DELETE FUNCTION
+const handleDeleteConfirm = async () => {
+  if (!deleteId) return;
+
+  try {
+    setDeleteLoading(true);
+
+    const result = await deleteProduct(deleteId);
+    console.log(result);
+
+    if (result?.success) {
+       
+      setProductList((prev) =>
+        prev.filter((item) => item._id !== deleteId)
+      );
+
+      toast.success("Product deleted successfully");
     }
-  };
+  } catch (error) {
+    console.error(error);
+    toast.error("Delete failed");
+  } finally {
+    setDeleteLoading(false);
+    setDeleteId(null);
+  }
+};
 
   const handleCloseModal = () => {
     setSelectedProduct(null);
@@ -69,25 +92,26 @@ const AllProduct = ({ products = [], loading = false }: Props) => {
           </thead>
 
           <tbody>
-            {products.length === 0 ? (
+            {productList.length === 0 ? (
               <tr>
                 <td colSpan={7} className="p-6 text-center text-red-700">
                   No Products Found
                 </td>
               </tr>
             ) : (
-              products.map((product, index) => (
+              productList.map((product, index) => (
                 <tr key={product._id} className="border-t hover:bg-gray-50 transition">
                   <td className="p-4">{index + 1}</td>
                   <td className="p-4">{product.barcode ?? 0}</td>
                   <td className="p-4 font-medium">{product.name}</td>
                   <td className="p-4">{product.category}</td>
+                  <td className="p-4">{product.productAvailable}</td>
                   <td className="p-4">{product.purchasePrice ?? "N/A"}</td>
                   <td className="p-4">{product.stock ?? 0}</td>
                   <td className="p-4 text-center space-x-2">
                     <ActionButton label="View" color="blue" onClick={() => handleView(product)} />
                     <ActionButton label="Edit" color="green" onClick={() => handleEdit(product)} />
-                    <ActionButton label="Delete" color="red" onClick={() => handleDelete(product._id)} />
+                    <ActionButton label="Delete" color="red" onClick={() => setDeleteId(product._id)} />
                   </td>
                 </tr>
               ))
@@ -114,7 +138,7 @@ const AllProduct = ({ products = [], loading = false }: Props) => {
             <div className="flex gap-2 pt-2">
               <ActionButton label="View" color="blue" onClick={() => handleView(product)} />
               <ActionButton label="Edit" color="green" onClick={() => handleEdit(product)} />
-              <ActionButton label="Delete" color="red" onClick={() => handleDelete(product._id)} />
+              <ActionButton label="Delete" color="red" onClick={() => setDeleteId(product._id)} />
             </div>
           </div>
         ))}
@@ -128,6 +152,14 @@ const AllProduct = ({ products = [], loading = false }: Props) => {
       {modalType === "edit" && selectedProduct && (
         <EditProductModal product={selectedProduct} onClose={handleCloseModal} />
       )}
+
+      {/* ✅ DELETE CONFIRMATION DIALOG */}
+      <DeleteConfirmDialog
+        open={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleDeleteConfirm}
+        loading={deleteLoading}
+      />
     </div>
   );
 };
