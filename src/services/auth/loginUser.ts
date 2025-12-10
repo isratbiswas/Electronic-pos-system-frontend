@@ -25,7 +25,6 @@ export const loginUser =async(_currentState: any, formData: any) :Promise<any> =
         }
         const validatedPayload = zodValidator(payload, loginValidationZodSchema).data;
         const res =await serverFetch.post("/auth/login", {
-            credentials: "include",
             body: JSON.stringify(validatedPayload),
             headers: {
                 "Content-Type" : "application/json"

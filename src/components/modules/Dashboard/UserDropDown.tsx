@@ -28,7 +28,7 @@ const UserDropDown =  ( {userInfo}: UserDropDownProps) => {
         <DropdownMenuLabel>
             <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium">{userInfo && userInfo.name} israt</p>
-                <p className="text-xs text-muted-foreground"> {userInfo && userInfo.email}</p>
+                <p className="text-xs text-muted-foreground"> {userInfo && userInfo.email}dfd</p>
                 <p className="text-xs text-primary capitalize">{userInfo && userInfo.role.toLocaleLowerCase()}</p>
             </div>
         </DropdownMenuLabel>

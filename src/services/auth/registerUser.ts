@@ -16,7 +16,7 @@ export const registerUser = async (_currentState: any, formData:any) : Promise<a
             password:formData.get("password"),
             phone: formData.get("phone"),
             confirmPassword: formData.get("confirmPassword"),
-            // role:formData.get("role")
+            role:formData.get("role")
         }
         console.log(payload, "israt-2");
        

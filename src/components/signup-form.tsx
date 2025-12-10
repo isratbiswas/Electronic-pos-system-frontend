@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Field, FieldGroup, FieldLabel, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useActionState, useEffect } from "react";
 import { registerUser } from "@/services/auth/registerUser";
 import { toast } from "sonner";
 import Link from "next/link";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 export function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
   const [state, formAction, isPending] = useActionState(registerUser, null);
@@ -148,6 +148,24 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
               <FieldDescription className="text-slate-400">
                 Must be at least 6 characters long.
               </FieldDescription>
+              {/* Role */}
+<Field>
+  <FieldLabel htmlFor="role" className="text-white font-medium">
+    Role
+  </FieldLabel>
+
+  {/* IMPORTANT: name="role" so server action gets it */}
+  <Select name="role">
+    <SelectTrigger className="bg-slate-800 text-white border border-slate-700">
+      <SelectValue placeholder="Select role" />
+    </SelectTrigger>
+
+    <SelectContent>
+      <SelectItem value="MANAGER">Manager</SelectItem>
+      <SelectItem value="CASHIER">Cashier</SelectItem>
+    </SelectContent>
+  </Select>
+</Field>
 
               {/* Submit Button */}
               <Field>

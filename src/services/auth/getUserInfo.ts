@@ -24,14 +24,14 @@ export const getUserInfo = async(): Promise<IUser | any>  => {
             const verifiedToken =jwt.verify(accessToken, process.env.JWT_SECRET as string) as JwtPayload; 
             console.log(verifiedToken);
           const  userInfo ={
-                name: verifiedToken.name || "unknown user",
+                name: verifiedToken.name ,
                 email: verifiedToken.email,
                 role: verifiedToken.role,
                 phone: verifiedToken.phone,
                 address: verifiedToken.address
 
             }
-            console.log(userInfo);
+            console.log(userInfo) , "haire";
         }
         // userInfo ={
         //     name: result.data.admin?.name || result.data.manager?.name || result.data.cashier?.name || "Unknown User",
