@@ -4,6 +4,7 @@
 
 import { serverFetch } from "@/lib/server-fetch";
 import { zodValidator } from "@/lib/zodValidator";
+import { IProduct } from "@/types/product";
 import { productValidationZodSchema } from "@/zod/product.validation";
 
 export const createProduct = async(_prevState: any, formData:FormData) : Promise<any> => {
@@ -56,7 +57,7 @@ export const createProduct = async(_prevState: any, formData:FormData) : Promise
 export  const getProducts = async() =>{
     try {
         const response = await serverFetch.get("/product/all-products", {
-            cache : "force-cache",
+            cache : "no-store",
             next: {tags: ["product-list"]}
         })
         console.log(response, "mira");
@@ -71,10 +72,18 @@ export  const getProducts = async() =>{
         };
     }
 } 
-export  const updateProducts = async(id:string) =>{
+export  const updateProducts = async(id:string,payload: Partial<IProduct>) =>{
     try {
-        const response = await serverFetch.patch(`/product/${id}`)
+        
+        const response = await serverFetch.patch(`/product/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
         const result = await response.json();
+        console.log(result, "updated");
         return result;
     } catch (error: any) {
         console.log(error);
