@@ -1,14 +1,14 @@
-
+"use server"
 import DashboardNavbarContent from './DashboardNavbarContent';
 import { getUserInfo } from '@/services/auth/getUserInfo';
 import { IUser } from '@/types';
 
 const DashboardNavbar = async() => {
-   const userInfo = (await getUserInfo()) as IUser;
-    console.log(userInfo,"navbartrfgf");
+   const userInfo =await getUserInfo();
+    const user= userInfo?.data ?? [];
     return (
         <div> 
-            <DashboardNavbarContent userInfo={userInfo}/>
+            <DashboardNavbarContent userInfo={user}/>
         </div>
     );
 };

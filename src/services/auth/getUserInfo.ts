@@ -16,28 +16,31 @@ export const getUserInfo = async(): Promise<IUser | any>  => {
         console.log(response);
         const result =  await response.json();
         console.log(result, "user-res");
-        if(result.success){
-            const accessToken = await getCookie("accessToken");
-            if(!accessToken){
-                throw new Error("No access token found")
-            }
-            const verifiedToken =jwt.verify(accessToken, process.env.JWT_SECRET as string) as JwtPayload; 
-            console.log(verifiedToken);
-          const  userInfo ={
-                name: verifiedToken.name ,
-                email: verifiedToken.email,
-                role: verifiedToken.role,
-                phone: verifiedToken.phone,
-                address: verifiedToken.address
-
-            }
-            console.log(userInfo) , "haire";
+        if(!result){
+            throw new Error ("you are not permitted")
         }
+        // if(result.success){
+        //     const accessToken = await getCookie("accessToken");
+        //     if(!accessToken){
+        //         throw new Error("No access token found")
+        //     }
+        //     const verifiedToken =jwt.verify(accessToken, process.env.JWT_SECRET as string) as JwtPayload; 
+        //     console.log(verifiedToken);
+        //   const  userInfo ={
+        //         name: verifiedToken.name ,
+        //         email: verifiedToken.email,
+        //         role: verifiedToken.role,
+        //         phone: verifiedToken.phone,
+        //         address: verifiedToken.address
+
+        //     }
+        //     console.log(userInfo) , "haire";
+        // }
         // userInfo ={
         //     name: result.data.admin?.name || result.data.manager?.name || result.data.cashier?.name || "Unknown User",
         //     ...result.data
         // }
-        return userInfo;
+        return result;
      } catch (error: any) {
         console.log(error);
        

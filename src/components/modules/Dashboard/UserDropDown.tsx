@@ -18,8 +18,8 @@ const UserDropDown =  ( {userInfo}: UserDropDownProps) => {
     return (
           <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="rounded-full">
-            <span className="text-sm font-semibold">
+        <Button variant="outline" size="icon" className="border-1 border-purple-400 rounded-full">
+            <span className="text-xl text-[#E67E22] font-semibold">
                 {userInfo && userInfo.name.charAt(0).toUpperCase() || "Unknown User"}
             </span>
         </Button>
@@ -27,9 +27,9 @@ const UserDropDown =  ( {userInfo}: UserDropDownProps) => {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
             <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium">{userInfo && userInfo.name} israt</p>
-                <p className="text-xs text-muted-foreground"> {userInfo && userInfo.email}dfd</p>
-                <p className="text-xs text-primary capitalize">{userInfo && userInfo.role.toLocaleLowerCase()}</p>
+                <p className="text-lg font-medium">{userInfo && userInfo.name} </p>
+                <p className="text-base text-muted-foreground"> {userInfo && userInfo.email}</p>
+                <p className="text-md text-primary capitalize">{userInfo && userInfo.role.toLocaleLowerCase()}</p>
             </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator/>
