@@ -117,9 +117,6 @@ export const updateProfile = async (payload: Partial<IUser>) => {
       body: JSON.stringify(payload),
     });
     const result = await response.json();
-    if (result.success) {
-      toast.success("Profile Updated Successfully");
-    }
     console.log(result, "updated");
     return result;
   } catch (error: any) {
