@@ -30,8 +30,13 @@ const Navbar = async () => {
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-purple-600 text-white shadow-md">
             <ShoppingBag size={18} />
           </div>
-          <span className="text-lg font-bold tracking-wide">
-            Electronic<span className="text-primary">Shop</span>
+          <span className="text-2xl font-extrabold tracking-wide">
+            <span className="bg-gradient-to-r from-blue-400 via-teal-400 to-cyan-500 bg-clip-text text-transparent drop-shadow-md">
+              Electronic
+            </span>
+            <span className="bg-gradient-to-r from-teal-300 via-blue-300 to-indigo-400 bg-clip-text text-transparent drop-shadow-md ml-1">
+              Shop
+            </span>
           </span>
         </Link>
 
