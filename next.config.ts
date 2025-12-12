@@ -2,7 +2,19 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-    reactStrictMode: true,
+  turbopack: {
+    root: "./",
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
+
+  reactStrictMode: true,
   productionBrowserSourceMaps: false,
   reactCompiler: true,
 };

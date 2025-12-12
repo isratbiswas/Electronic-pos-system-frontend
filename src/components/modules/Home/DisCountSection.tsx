@@ -2,24 +2,25 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 // Example offer images
 const offers = [
   {
     title: "10% Off Electronics",
     subtitle: "Valid until Dec 31, 2025",
-    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e"
+    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e",
   },
   {
     title: "Buy 1 Get 1 Free",
     subtitle: "On select items",
-    img: "https://i.pinimg.com/736x/2e/88/21/2e8821faf995d9e34580008d12c27785.jpg"
+    img: "https://i.pinimg.com/736x/2e/88/21/2e8821faf995d9e34580008d12c27785.jpg",
   },
   {
     title: "20% Off Accessories",
     subtitle: "Limited time only",
-    img: "https://i.pinimg.com/736x/4f/c3/3e/4fc33e13f4bbae0b72615df31f5e5931.jpg"
-  }
+    img: "https://i.pinimg.com/736x/4f/c3/3e/4fc33e13f4bbae0b72615df31f5e5931.jpg",
+  },
 ];
 
 const DisCountSection = () => {
@@ -39,14 +40,18 @@ const DisCountSection = () => {
           className="lg:col-span-2 bg-slate-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
         >
           <div className="h-96 overflow-hidden">
-            <img
+            <Image
               src={offers[0].img}
               alt={offers[0].title}
+              width={500}
+              height={300}
               className="w-full h-full object-cover opacity-80 transition-transform duration-500 hover:scale-105"
             />
           </div>
           <div className="p-6 text-center lg:text-left">
-            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2">{offers[0].title}</h3>
+            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+              {offers[0].title}
+            </h3>
             <p className="text-slate-400">{offers[0].subtitle}</p>
           </div>
         </motion.div>
@@ -63,14 +68,18 @@ const DisCountSection = () => {
               className="bg-slate-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
             >
               <div className="h-44 sm:h-48 overflow-hidden">
-                <img
+                <Image
                   src={offer.img}
                   alt={offer.title}
+                  width={500}
+                  height={300}
                   className="w-full h-full object-cover opacity-80 transition-transform duration-500 hover:scale-105"
                 />
               </div>
               <div className="p-4 text-center lg:text-left">
-                <h3 className="text-xl font-bold text-white mb-1">{offer.title}</h3>
+                <h3 className="text-xl font-bold text-white mb-1">
+                  {offer.title}
+                </h3>
                 <p className="text-slate-400 text-sm">{offer.subtitle}</p>
               </div>
             </motion.div>

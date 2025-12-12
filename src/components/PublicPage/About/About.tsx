@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -51,9 +52,11 @@ export default function About() {
           transition={{ duration: 0.8 }}
         >
           <div className="rounded-3xl overflow-hidden bg-slate-900 shadow-2xl">
-            <img
-              src="https://images.unsplash.com/photo-1506765515384-028b60a970df"
+            <Image
+              src="https://i.pinimg.com/1200x/eb/d8/4a/ebd84aee9bd1feddce359d9803236f4b.jpg"
               alt="team"
+              width={500}
+              height={500}
               className="w-full h-full object-cover opacity-80"
             />
           </div>
@@ -105,28 +108,40 @@ export default function About() {
 
       {/* TEAM */}
       <section id="team" className="max-w-6xl mx-auto mt-24">
-        <h2 className="text-2xl font-bold text-white mb-6">
-          Meet the team
-        </h2>
+        <h2 className="text-2xl font-bold text-white mb-6">Meet the team</h2>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          <TeamCard name="Aisha Rahman" role="Product Designer" img="https://images.unsplash.com/photo-1544005313-94ddf0286df2" />
-          <TeamCard name="Rafi Ahmed" role="Lead Engineer" img="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c" />
-          <TeamCard name="Nadia Khan" role="Growth Lead" img="https://i.pinimg.com/1200x/e6/cd/f6/e6cdf68ad3b4789a6e0ff556d63b9bbe.jpg" />
-          <TeamCard name="Samira Chowdhury" role="Founder" img="https://i.pinimg.com/736x/d9/a0/0e/d9a00eb3ab1f04191216838c46a1cff6.jpg" />
+          <TeamCard
+            name="Aisha Rahman"
+            role="Product Designer"
+            img="https://images.unsplash.com/photo-1544005313-94ddf0286df2"
+          />
+          <TeamCard
+            name="Rafi Ahmed"
+            role="Lead Engineer"
+            img="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c"
+          />
+          <TeamCard
+            name="Nadia Khan"
+            role="Growth Lead"
+            img="https://i.pinimg.com/1200x/e6/cd/f6/e6cdf68ad3b4789a6e0ff556d63b9bbe.jpg"
+          />
+          <TeamCard
+            name="Samira Chowdhury"
+            role="Founder"
+            img="https://i.pinimg.com/736x/d9/a0/0e/d9a00eb3ab1f04191216838c46a1cff6.jpg"
+          />
         </div>
       </section>
 
       {/* CTA */}
-      <section
-        id="contact"
-        className="max-w-6xl mx-auto mt-24 text-center"
-      >
+      <section id="contact" className="max-w-6xl mx-auto mt-24 text-center">
         <h3 className="text-3xl font-bold text-white">
           Ready to modernize your store?
         </h3>
         <p className="text-slate-400 mt-3 max-w-xl mx-auto">
-          Launch faster, sell smarter, and grow confidently with our next-gen POS.
+          Launch faster, sell smarter, and grow confidently with our next-gen
+          POS.
         </p>
 
         <button className="mt-8 px-10 py-4 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold shadow-xl hover:scale-105 transition">
@@ -148,7 +163,15 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function TeamCard({ name, role, img }: { name: string; role: string; img: string }) {
+function TeamCard({
+  name,
+  role,
+  img,
+}: {
+  name: string;
+  role: string;
+  img: string;
+}) {
   return (
     <motion.div
       whileHover={{ y: -6 }}

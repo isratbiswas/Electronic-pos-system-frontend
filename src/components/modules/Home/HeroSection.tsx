@@ -1,13 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 // Example carousel images
 const images = [
   "https://i.pinimg.com/736x/46/eb/d9/46ebd96db090d9b31e1252f8c1a3dca3.jpg",
   "https://i.pinimg.com/1200x/f2/fa/79/f2fa799825d59bf5e7943151da5c4fd6.jpg",
-  "https://i.pinimg.com/736x/69/0b/08/690b080059a762503b6d56b1686b686f.jpg"
+  "https://i.pinimg.com/736x/69/0b/08/690b080059a762503b6d56b1686b686f.jpg",
 ];
 
 const HeroSection = () => {
@@ -46,7 +47,8 @@ const HeroSection = () => {
           </h1>
 
           <p className="text-slate-300 max-w-md">
-            Our POS system is designed for speed, clarity, and growth. Manage billing, inventory, and sales effortlessly.
+            Our POS system is designed for speed, clarity, and growth. Manage
+            billing, inventory, and sales effortlessly.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mt-6 justify-center lg:justify-start">
@@ -72,9 +74,11 @@ const HeroSection = () => {
           transition={{ duration: 1 }}
           className="lg:w-1/2 rounded-3xl overflow-hidden shadow-2xl"
         >
-          <img
+          <Image
             key={currentIndex}
             src={images[currentIndex]}
+            width={500}
+            height={300}
             alt="POS illustration"
             className="w-full h-96 sm:h-[500px] object-cover transition-all duration-700 rounded-3xl"
           />
