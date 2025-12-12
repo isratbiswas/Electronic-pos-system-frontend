@@ -12,8 +12,6 @@ A modern, secure, and scalable Point of Sale (POS) system for electronic shops b
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
-- [License](#license)
 
 ---
 

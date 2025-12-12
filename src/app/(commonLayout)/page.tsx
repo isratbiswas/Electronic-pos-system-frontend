@@ -5,16 +5,15 @@ import ReviewSection from "@/components/modules/Home/ReviewSection";
 import ServiceSection from "@/components/modules/Home/ServiceSection";
 import WhyChooseUs from "@/components/modules/Home/WhyChooseUs";
 
-
 export default function Home() {
   return (
- <div className="">
-   <HeroSection/>
-   <ServiceSection/>
-   <HowItWorksSection/>
-   <ReviewSection/>
-   <DisCountSection/>
-   <WhyChooseUs/>
- </div>
+    <div className="">
+      <HeroSection />
+      <ServiceSection />
+      <HowItWorksSection />
+      <ReviewSection />
+      <DisCountSection />
+      <WhyChooseUs />
+    </div>
   );
 }

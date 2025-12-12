@@ -3,6 +3,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getIconComponent } from "@/lib/icon-mapper";
 import { cn } from "@/lib/utils";
 import { IUser } from "@/types";
 import { NavSection } from "@/types/dashboard.interface";
@@ -49,9 +50,7 @@ const DashboardSidebarContent = ({
               <div className="space-y-1">
                 {section.items.map((item: any) => {
                   const isActive = pathname === item.href;
-                  //   const Icon = getIconComponent(item.icon);
-
-                  const Icon = <Bell />;
+                  const Icon = getIconComponent(item.icon);
 
                   return (
                     <Link
@@ -64,7 +63,7 @@ const DashboardSidebarContent = ({
                           : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                       )}
                     >
-                      {/* <Icon className="h-4 w-4" /> */}
+                      <Icon className="h-4 w-4" />
                       <span className="flex-1">{item.title}</span>
                       {item.badge && (
                         <Badge

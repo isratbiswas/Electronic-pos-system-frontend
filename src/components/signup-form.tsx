@@ -2,15 +2,31 @@
 
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Field, FieldGroup, FieldLabel, FieldDescription } from "@/components/ui/field";
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldDescription,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useActionState, useEffect } from "react";
 import { registerUser } from "@/services/auth/registerUser";
 import { toast } from "sonner";
 import Link from "next/link";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import Image from "next/image";
+import InputFieldError from "./shered/InputFieldError";
 
-export function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
+export function RegisterForm({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   const [state, formAction, isPending] = useActionState(registerUser, null);
 
   useEffect(() => {
@@ -33,16 +49,19 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
       >
         {/* LEFT IMAGE + INFO */}
         <div className="hidden md:block relative w-full">
-          <img
+          <Image
             src="https://i.pinimg.com/1200x/93/8b/51/938b51ebe57c633bc28cdadfeea30ab9.jpg"
             alt="Register Banner"
+            width={500}
+            height={500}
             className="absolute inset-0 h-full w-full object-cover brightness-50"
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-indigo-600 via-purple-600/70 to-indigo-500/70"></div>
           <div className="relative z-10 flex flex-col justify-center h-full p-12 text-white">
             <h2 className="text-3xl font-bold mb-4">Join Us 👋</h2>
             <p className="opacity-90">
-              Create your account and start managing your POS dashboard efficiently. Secure, fast, and easy-to-use.
+              Create your account and start managing your POS dashboard
+              efficiently. Secure, fast, and easy-to-use.
             </p>
           </div>
         </div>
@@ -63,16 +82,16 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
               {/* Name */}
               <Field>
                 <FieldLabel htmlFor="name" className="text-white font-medium">
-                  Name
+                  Full Name
                 </FieldLabel>
                 <Input
                   id="name"
                   name="name"
                   type="text"
                   placeholder="Israt Jahan"
-                  required
                   className="bg-slate-800 text-white border border-slate-700 focus:ring-indigo-500 focus:outline-none rounded-lg px-4 py-2 w-full"
                 />
+                <InputFieldError field="name" state={state} />
               </Field>
 
               {/* Email */}
@@ -85,14 +104,17 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
                   name="email"
                   type="text"
                   placeholder="m@example.com"
-                  required
                   className="bg-slate-800 text-white border border-slate-700 focus:ring-indigo-500 focus:outline-none rounded-lg px-4 py-2 w-full"
                 />
+                <InputFieldError field="email" state={state} />
               </Field>
 
               {/* Address */}
               <Field>
-                <FieldLabel htmlFor="address" className="text-white font-medium">
+                <FieldLabel
+                  htmlFor="address"
+                  className="text-white font-medium"
+                >
                   Address
                 </FieldLabel>
                 <Input
@@ -102,6 +124,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
                   placeholder="Rajshahi"
                   className="bg-slate-800 text-white border border-slate-700 focus:ring-indigo-500 focus:outline-none rounded-lg px-4 py-2 w-full"
                 />
+                <InputFieldError field="address" state={state} />
               </Field>
 
               {/* Phone */}
@@ -116,56 +139,64 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
                   placeholder="017********"
                   className="bg-slate-800 text-white border border-slate-700 focus:ring-indigo-500 focus:outline-none rounded-lg px-4 py-2 w-full"
                 />
+                <InputFieldError field="phone" state={state} />
               </Field>
 
               {/* Password & Confirm */}
               <Field className="grid grid-cols-2 gap-4">
                 <Field>
-                  <FieldLabel htmlFor="password" className="text-white font-medium">
+                  <FieldLabel
+                    htmlFor="password"
+                    className="text-white font-medium"
+                  >
                     Password
                   </FieldLabel>
                   <Input
                     id="password"
                     name="password"
                     type="password"
-                    required
                     className="bg-slate-800 text-white border border-slate-700 focus:ring-indigo-500 focus:outline-none rounded-lg px-4 py-2 w-full"
                   />
+                  <InputFieldError field="password" state={state} />
                 </Field>
                 <Field>
-                  <FieldLabel htmlFor="confirmPassword" className="text-white font-medium">
+                  <FieldLabel
+                    htmlFor="confirmPassword"
+                    className="text-white font-medium"
+                  >
                     Confirm Password
                   </FieldLabel>
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
                     type="password"
-                    required
                     className="bg-slate-800 text-white border border-slate-700 focus:ring-indigo-500 focus:outline-none rounded-lg px-4 py-2 w-full"
                   />
+                  <InputFieldError field="confirmPassword" state={state} />
                 </Field>
               </Field>
               <FieldDescription className="text-slate-400">
                 Must be at least 6 characters long.
               </FieldDescription>
               {/* Role */}
-<Field>
-  <FieldLabel htmlFor="role" className="text-white font-medium">
-    Role
-  </FieldLabel>
+              <Field>
+                <FieldLabel htmlFor="role" className="text-white font-medium">
+                  Role
+                </FieldLabel>
 
-  {/* IMPORTANT: name="role" so server action gets it */}
-  <Select name="role">
-    <SelectTrigger className="bg-slate-800 text-white border border-slate-700">
-      <SelectValue placeholder="Select role" />
-    </SelectTrigger>
+                {/* IMPORTANT: name="role" so server action gets it */}
+                <Select name="role">
+                  <SelectTrigger className="bg-slate-800 text-white border border-slate-700">
+                    <SelectValue placeholder="Select role" />
+                  </SelectTrigger>
 
-    <SelectContent>
-      <SelectItem value="MANAGER">Manager</SelectItem>
-      <SelectItem value="CASHIER">Cashier</SelectItem>
-    </SelectContent>
-  </Select>
-</Field>
+                  <SelectContent>
+                    <SelectItem value="MANAGER">Manager</SelectItem>
+                    <SelectItem value="CASHIER">Cashier</SelectItem>
+                  </SelectContent>
+                </Select>
+                <InputFieldError field="role" state={state} />
+              </Field>
 
               {/* Submit Button */}
               <Field>
@@ -182,7 +213,10 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
 
               <FieldDescription className="text-center text-slate-400 mt-2">
                 Already have an account?{" "}
-                <Link href="/login" className="text-indigo-400 hover:text-white transition-colors">
+                <Link
+                  href="/login"
+                  className="text-indigo-400 hover:text-white transition-colors"
+                >
                   Login
                 </Link>
               </FieldDescription>

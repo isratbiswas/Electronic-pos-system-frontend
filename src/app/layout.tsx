@@ -33,16 +33,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="sticky top-0 z-50">
-          <Navbar />
-        </div>
+        <div className="sticky top-0 z-50"></div>
         <div className="min-h-dvh">{children}</div>
         <Toaster position="top-center" richColors />
         <Suspense fallback={null}>
           <LoginSuccessToast />
           <LogoutSuccessToast />
         </Suspense>
-        <Footer />
       </body>
     </html>
   );
