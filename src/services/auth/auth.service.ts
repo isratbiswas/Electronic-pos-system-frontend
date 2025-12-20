@@ -114,10 +114,12 @@ export const updateProfile = async (payload: Partial<IUser>) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(payload),
     });
+    if (!response.ok) throw new Error("updated failed");
     const result = await response.json();
-    console.log(result, "updated");
+    console.log(result, "updated-2");
     return result;
   } catch (error: any) {
     console.log(error);

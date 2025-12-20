@@ -1,11 +1,14 @@
-import React from 'react';
+import AllProduct from "@/components/modules/Admin/AllProduct";
+import { getProducts } from "@/services/admin/productManagement";
 
-const AllProduct = () => {
-    return (
-        <div>
-            <h1>all product</h1>
-        </div>
-    );
+const AdminGetProducts = async () => {
+  const products = await getProducts();
+
+  return (
+    <div>
+      <AllProduct products={products?.data ?? []} />
+    </div>
+  );
 };
 
-export default AllProduct;
+export default AdminGetProducts;

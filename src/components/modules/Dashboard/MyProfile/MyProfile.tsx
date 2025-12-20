@@ -15,7 +15,6 @@ import { useState } from "react";
 import { updateProfile } from "@/services/auth/auth.service";
 import { toast } from "sonner";
 import EditProfileModal from "./EditProfileModal";
-import { revalidate } from "@/lib/revalidate";
 import { getUserInfo } from "@/services/auth/getUserInfo";
 
 interface MyProfileProps {
@@ -23,17 +22,21 @@ interface MyProfileProps {
   onEdit?: () => void; // optional edit handler
 }
 
-const MyProfile = ({ userInfo, onEdit }: MyProfileProps) => {
+const MyProfile = ({ userInfo: initialUserInfo, onEdit }: MyProfileProps) => {
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<IUser>(initialUserInfo);
 
   const handleSubmit = async (data: Partial<IUser>) => {
     try {
       const result = await updateProfile(data);
       if (result.success) {
-        toast.success(result.message || "Product updated successfully");
-        const updatedProfile = await getUserInfo();
-        // setProducts(updatedList.data)
-        await revalidate(updatedProfile);
+        toast.success(result.message || "profile updated successfully");
+        if (result.data) {
+          setUser(result.data);
+        } else {
+          const updatedProfile = await getUserInfo();
+          setUser(updatedProfile);
+        }
         setOpen(false);
       } else {
         toast.error(result.message || "Failed to update product");
@@ -63,38 +66,38 @@ const MyProfile = ({ userInfo, onEdit }: MyProfileProps) => {
             {/* Name */}
             <div className="flex items-center gap-3">
               <FaUser className="text-indigo-600 text-xl" />
-              <p className="text-gray-700 font-semibold">{userInfo?.name}</p>
+              <p className="text-gray-700 font-semibold">{user?.name}</p>
             </div>
 
             {/* Email */}
             <div className="flex items-center gap-3">
               <FaEnvelope className="text-blue-600 text-xl" />
-              <p className="text-gray-700">{userInfo?.email}</p>
+              <p className="text-gray-700">{user?.email}</p>
             </div>
 
             {/* Role */}
             <div className="flex items-center gap-3">
               <FaUserShield className="text-green-600 text-xl" />
-              <p className="text-gray-700 capitalize">{userInfo?.role}</p>
+              <p className="text-gray-700 capitalize">{user?.role}</p>
             </div>
 
             {/* Address */}
             <div className="flex items-center gap-3">
               <FaMapMarkerAlt className="text-red-600 text-xl" />
-              <p className="text-gray-700">{userInfo?.address}</p>
+              <p className="text-gray-700">{user?.address}</p>
             </div>
 
             {/* Phone */}
             <div className="flex items-center gap-3">
               <FaPhone className="text-purple-600 text-xl" />
-              <p className="text-gray-700">{userInfo?.phone}</p>
+              <p className="text-gray-700">{user?.phone}</p>
             </div>
           </div>
         </div>
       </div>
       {open && (
         <EditProfileModal
-          userInfo={userInfo}
+          userInfo={user}
           onClose={() => setOpen(false)}
           onSubmit={handleSubmit}
         />

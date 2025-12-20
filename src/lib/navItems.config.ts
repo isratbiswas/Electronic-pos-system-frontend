@@ -126,7 +126,7 @@ export const cashierNavItems: NavSection[] = [
       },
       {
         title: "Order Create",
-        href: "/dashboard/createOrders",
+        href: "/dashboard/createOrder",
         icon: "Wallet",
         roles: ["CASHIER"],
       },

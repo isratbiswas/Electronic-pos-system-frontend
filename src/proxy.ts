@@ -1,4 +1,4 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt, { JwtPayload, TokenExpiredError } from "jsonwebtoken";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import {
@@ -9,7 +9,11 @@ import {
 } from "./lib/auth-utils";
 import { getNewAccessToken } from "./services/auth/auth.service";
 import { getUserInfo } from "./services/auth/getUserInfo";
-import { deleteCookie, getCookie } from "./services/auth/tokenHandlers";
+import {
+  deleteCookie,
+  getCookie,
+  setCookie,
+} from "./services/auth/tokenHandlers";
 
 // This function can be marked `async` if using `await` inside
 export async function proxy(request: NextRequest) {
@@ -39,18 +43,33 @@ export async function proxy(request: NextRequest) {
 
   let userRole: UserRole | null = null;
   if (accessToken) {
-    const verifiedToken: JwtPayload | string = jwt.verify(
-      accessToken,
-      process.env.JWT_SECRET as string
-    );
+    try {
+      const verifiedToken: JwtPayload | string = jwt.verify(
+        accessToken,
+        process.env.JWT_SECRET as string
+      ) as JwtPayload;
 
-    if (typeof verifiedToken === "string") {
+      if (!verifiedToken || typeof verifiedToken !== "object") {
+        await deleteCookie("accessToken");
+        await deleteCookie("refreshToken");
+        return NextResponse.redirect(new URL("/login", request.url));
+      }
+
+      userRole = (verifiedToken.role as UserRole) ?? null;
+      console.log(userRole, "role");
+    } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        // const newAccessToken = await refreshAccessToken();
+        // setCookie("accessToken", newAccessToken)
+        // continue request;
+        console.log("JWT expired");
+      } else {
+        console.log("Invalid token");
+      }
       await deleteCookie("accessToken");
       await deleteCookie("refreshToken");
       return NextResponse.redirect(new URL("/login", request.url));
     }
-
-    userRole = verifiedToken.role;
   }
 
   const routerOwner = getRouteOwner(pathname);

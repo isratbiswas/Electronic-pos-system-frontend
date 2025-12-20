@@ -38,7 +38,9 @@ export function OrderCreateForm({
   const changeAmount = paymentAmount - totalAmount;
   console.log(changeAmount, "eorejr");
   useEffect(() => {
-    if (state && !state.success && state.message) {
+    if (state?.success) {
+      toast.success("Order created Successfully");
+    } else if (state && !state.success && state.message) {
       toast.error(state.message);
     }
   }, [state]);
