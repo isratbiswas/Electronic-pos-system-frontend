@@ -37,18 +37,42 @@ const AllProduct = ({ products = [], loading = false }: Props) => {
   };
 
   // ✅ FINAL DELETE FUNCTION
+  // const handleDeleteConfirm = async () => {
+  //   if (!deleteId) return;
+
+  //   try {
+  //     setDeleteLoading(true);
+
+  //     const result = await deleteProduct(deleteId);
+  //     console.log(result, deleteId, "jis");
+
+  //     if (result?.success) {
+  //       setProductList((prev) =>
+  //         prev.filter((item) => item._id.toString() !== deleteId)
+  //       );
+
+  //       toast.success("Product deleted successfully");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error("Delete failed");
+  //   } finally {
+  //     setDeleteLoading(false);
+  //     setDeleteId(null);
+  //   }
+  // };
+
   const handleDeleteConfirm = async () => {
     if (!deleteId) return;
-
     try {
       setDeleteLoading(true);
-
       const result = await deleteProduct(deleteId);
       console.log(result);
-
       if (result?.success) {
-        setProductList((prev) => prev.filter((item) => item._id !== deleteId));
-
+        setProductList((prev) =>
+          prev.filter((item) => item._id.toString() !== deleteId)
+        );
+        setDeleteId(null);
         toast.success("Product deleted successfully");
       }
     } catch (error) {
@@ -106,11 +130,11 @@ const AllProduct = ({ products = [], loading = false }: Props) => {
             {products.map((product, index) => {
               let stockClass = "";
               if (product.stock > 10) {
-                stockClass = "bg-green-500  text-gray-200";
+                stockClass = "text-green-500  ";
               } else if (product.stock > 0 && product.stock <= 10) {
-                stockClass = "bg-yellow-500 text-gray-200 ";
+                stockClass = "text-yellow-500  ";
               } else {
-                stockClass = "bg-red-500 text-gray-200 ";
+                stockClass = "text-red-500  ";
               }
 
               return (

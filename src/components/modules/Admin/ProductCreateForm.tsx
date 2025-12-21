@@ -1,33 +1,38 @@
-
-
-"use client"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
+"use client";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { useActionState, useEffect } from "react"
-import { registerUser } from "@/services/auth/registerUser"
-import { toast } from "sonner"
-import { createProduct } from "@/services/admin/productManagement"
-
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { useActionState, useEffect } from "react";
+import { registerUser } from "@/services/auth/registerUser";
+import { toast } from "sonner";
+import { createProduct } from "@/services/admin/productManagement";
 
 export function ProductCreateForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [state,formAction, isPending] = useActionState(createProduct, null);
-  useEffect(() =>{
-   if(state && !state.success && state.message){
-    toast.error(state.message)
-   }
-  }, [state])
+  const [state, formAction, isPending] = useActionState(createProduct, null);
+  useEffect(() => {
+    console.log("State:", state);
+    if (state) {
+      if (state.success) {
+        toast.success("Product created successfully!");
+      } else if (state.message) {
+        toast.error(state.message);
+      }
+    }
+    // if (state && !state.success && state.message) {
+    //   toast.error(state.message);
+    // }
+  }, [state]);
   return (
     <div
       className={cn(
@@ -108,18 +113,10 @@ export function ProductCreateForm({
 
               <Field>
                 <FieldLabel htmlFor="barcode">Barcode</FieldLabel>
-                <Input
-                  id="barcode"
-                  name="barcode"
-                  placeholder="1234567890"
-                />
+                <Input id="barcode" name="barcode" placeholder="1234567890" />
               </Field>
 
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isPending}
-              >
+              <Button type="submit" className="w-full" disabled={isPending}>
                 {isPending ? "Adding..." : "Add Product"}
               </Button>
             </FieldGroup>
@@ -127,5 +124,5 @@ export function ProductCreateForm({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

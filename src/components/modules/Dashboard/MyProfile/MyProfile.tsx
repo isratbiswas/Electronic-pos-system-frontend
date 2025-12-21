@@ -19,27 +19,29 @@ import { getUserInfo } from "@/services/auth/getUserInfo";
 
 interface MyProfileProps {
   userInfo: IUser;
-  onEdit?: () => void; // optional edit handler
 }
 
-const MyProfile = ({ userInfo: initialUserInfo, onEdit }: MyProfileProps) => {
+const MyProfile = ({ userInfo: initialUserInfo }: MyProfileProps) => {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<IUser>(initialUserInfo);
 
   const handleSubmit = async (data: Partial<IUser>) => {
     try {
       const result = await updateProfile(data);
+
       if (result.success) {
-        toast.success(result.message || "profile updated successfully");
+        toast.success(result.message || "Profile updated successfully");
+
         if (result.data) {
           setUser(result.data);
         } else {
           const updatedProfile = await getUserInfo();
           setUser(updatedProfile);
         }
+
         setOpen(false);
       } else {
-        toast.error(result.message || "Failed to update product");
+        toast.error(result.message || "Failed to update profile");
       }
     } catch (error: any) {
       toast.error(error.message || "Something went wrong");
@@ -48,53 +50,58 @@ const MyProfile = ({ userInfo: initialUserInfo, onEdit }: MyProfileProps) => {
 
   return (
     <>
-      <div className="flex justify-center py-10 px-4">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
-          {/* Header */}
-          <div className="flex justify-between items-center mb-5">
-            <h2 className="text-2xl font-bold text-gray-800">My Profile</h2>
+      {/* Full Width Profile Page */}
+      <section className="w-full min-h-screen bg-gray-50 px-6 py-10">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-10">
+          <h2 className="text-3xl font-bold text-indigo-600">My Profile</h2>
 
-            <Button
-              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white shadow-md"
-              onClick={() => setOpen(true)}
-            >
-              <FaEdit /> Edit
-            </Button>
-          </div>
+          <Button
+            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white"
+            onClick={() => setOpen(true)}
+          >
+            <FaEdit /> Edit Profile
+          </Button>
+        </div>
 
-          <div className="space-y-4 mt-6">
-            {/* Name */}
-            <div className="flex items-center gap-3">
-              <FaUser className="text-indigo-600 text-xl" />
-              <p className="text-gray-700 font-semibold">{user?.name}</p>
-            </div>
+        {/* Profile Details */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+          <ProfileRow
+            label="Name"
+            icon={<FaUser className="text-indigo-600" />}
+            value={user?.name}
+          />
 
-            {/* Email */}
-            <div className="flex items-center gap-3">
-              <FaEnvelope className="text-blue-600 text-xl" />
-              <p className="text-gray-700">{user?.email}</p>
-            </div>
+          <ProfileRow
+            label="Email"
+            icon={<FaEnvelope className="text-blue-600" />}
+            value={user?.email}
+          />
 
-            {/* Role */}
-            <div className="flex items-center gap-3">
-              <FaUserShield className="text-green-600 text-xl" />
-              <p className="text-gray-700 capitalize">{user?.role}</p>
-            </div>
+          <ProfileRow
+            label="Role"
+            icon={<FaUserShield className="text-green-600" />}
+            value={user?.role}
+            capitalize
+          />
 
-            {/* Address */}
-            <div className="flex items-center gap-3">
-              <FaMapMarkerAlt className="text-red-600 text-xl" />
-              <p className="text-gray-700">{user?.address}</p>
-            </div>
+          <ProfileRow
+            label="Phone"
+            icon={<FaPhone className="text-purple-600" />}
+            value={user?.phone}
+          />
 
-            {/* Phone */}
-            <div className="flex items-center gap-3">
-              <FaPhone className="text-purple-600 text-xl" />
-              <p className="text-gray-700">{user?.phone}</p>
-            </div>
+          {/* Full width row */}
+          <div className="md:col-span-2">
+            <ProfileRow
+              label="Address"
+              icon={<FaMapMarkerAlt className="text-red-600" />}
+              value={user?.address}
+            />
           </div>
         </div>
-      </div>
+      </section>
+
       {open && (
         <EditProfileModal
           userInfo={user}
@@ -107,3 +114,31 @@ const MyProfile = ({ userInfo: initialUserInfo, onEdit }: MyProfileProps) => {
 };
 
 export default MyProfile;
+
+/* ---------- Reusable Row ---------- */
+
+const ProfileRow = ({
+  icon,
+  label,
+  value,
+  capitalize,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value?: string;
+  capitalize?: boolean;
+}) => (
+  <div className="flex items-start gap-4 bg-white p-5 rounded-lg border">
+    <div className="text-xl mt-1">{icon}</div>
+    <div>
+      <p className="text-sm text-gray-500">{label}</p>
+      <p
+        className={`text-gray-800 font-medium ${
+          capitalize ? "capitalize" : ""
+        }`}
+      >
+        {value || "—"}
+      </p>
+    </div>
+  </div>
+);

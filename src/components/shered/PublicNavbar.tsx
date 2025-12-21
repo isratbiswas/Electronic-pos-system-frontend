@@ -23,121 +23,124 @@ const Navbar = async () => {
     : "/";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-lg">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-purple-600 text-white shadow-md">
-            <ShoppingBag size={18} />
-          </div>
-          <span className="text-2xl font-extrabold tracking-wide">
-            <span className="bg-gradient-to-r from-blue-400 via-teal-400 to-cyan-500 bg-clip-text text-transparent drop-shadow-md">
-              Electronic
+    <header className="sticky top-6 z-50">
+      {/* Floating Container */}
+      <div className="relative mx-auto max-w-7xl rounded-full border  border-border/50 bg-background/70 backdrop-blur-xl shadow-lg">
+        <div className="flex h-16 items-center justify-between px-8">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center bg-indigo-600 rounded-xl text-white shadow">
+              <ShoppingBag className="" size={18} />
+            </div>
+            <span className="text-xl font-bold tracking-wide">
+              <span className="text-cyan-800">Electronic</span>
+              <span className="ml-1 text-muted-foreground">Shop</span>
             </span>
-            <span className="bg-gradient-to-r from-teal-300 via-blue-300 to-indigo-400 bg-clip-text text-transparent drop-shadow-md ml-1">
-              Shop
-            </span>
-          </span>
-        </Link>
+          </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          {navItems.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="relative text-muted-foreground transition hover:text-primary
-      after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0
-      after:bg-primary after:transition-all hover:after:w-full"
-            >
-              {link.label}
-            </Link>
-          ))}
-
-          {userInfo && (
-            <Link
-              href={dashboardRoute}
-              className="relative text-muted-foreground transition hover:text-primary
-      after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0
-      after:bg-primary after:transition-all hover:after:w-full"
-            >
-              Dashboard
-            </Link>
-          )}
-        </nav>
-
-        {/* <div className="hidden md:flex items-center space-x-2"> */}
-        {/* <NavbarAuthButtons
-            initialHasToken={!!accessToken}
-            initialUserInfo={userInfo}
-            initialDashboardRoute={dashboardRoute}
-          />
-        </div> */}
-
-        {/* Desktop Auth */}
-        <div className="hidden md:flex items-center gap-3">
-          {accessToken ? (
-            <LogoutButton />
-          ) : (
-            <Link href="/login">
-              <Button
+          {/* Center Desktop Navigation */}
+          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 text-sm font-medium">
+            {navItems.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
                 className="
-             rounded-full px-6
-             bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
-              text-white font-semibold
-             shadow-lg shadow-purple-500/30
-            hover:opacity-90 transition
-        "
+                  relative text-muted-foreground transition
+                  hover:text-primary
+                  after:absolute after:-bottom-1 after:left-0
+                  after:h-[2px] after:w-0
+                  after:bg-primary after:transition-all
+                  hover:after:w-full
+                "
               >
-                Login
-              </Button>
-            </Link>
-          )}
-        </div>
+                {item.label}
+              </Link>
+            ))}
 
-        {/* Mobile Menu */}
-        <div className="md:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button size="icon" variant="outline" className="rounded-full">
-                <Menu />
-              </Button>
-            </SheetTrigger>
+            {userInfo && (
+              <Link
+                href={dashboardRoute}
+                className="
+                  relative text-muted-foreground transition
+                  hover:text-primary
+                  after:absolute after:-bottom-1 after:left-0
+                  after:h-[2px] after:w-0
+                  after:bg-primary after:transition-all
+                  hover:after:w-full
+                "
+              >
+                Dashboard
+              </Link>
+            )}
+          </nav>
 
-            <SheetContent side="right" className="w-[320px] p-6">
-              <SheetTitle className="sr-only">Navigation</SheetTitle>
+          {/* Desktop Auth */}
+          <div className="hidden md:flex items-center gap-3">
+            {accessToken ? (
+              <LogoutButton />
+            ) : (
+              <Link href="/login">
+                <Button
+                  className="
+                    rounded-full px-6
+                    bg-gradient-to-r from-teal-400 to-cyan-500
+                    text-white font-semibold
+                    shadow-md
+                    hover:opacity-90
+                    transition
+                  "
+                >
+                  Login
+                </Button>
+              </Link>
+            )}
+          </div>
 
-              <div className="flex flex-col gap-6 mt-10">
-                {navItems.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className="text-lg font-medium text-muted-foreground hover:text-primary transition"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-                {userInfo && (
-                  <Link
-                    href={dashboardRoute}
-                    className="text-lg font-medium text-muted-foreground hover:text-primary transition"
-                  >
-                    Dashboard
-                  </Link>
-                )}
+          {/* Mobile Menu */}
+          <div className="md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button size="icon" variant="outline" className="rounded-full">
+                  <Menu />
+                </Button>
+              </SheetTrigger>
 
-                <div className="mt-6 border-t pt-6">
-                  {accessToken ? (
-                    <LogoutButton />
-                  ) : (
-                    <Link href="/login">
-                      <Button className="w-full rounded-full">Login</Button>
+              <SheetContent side="right" className="w-[320px] p-6">
+                <SheetTitle className="sr-only">Navigation</SheetTitle>
+
+                <div className="mt-10 flex flex-col gap-6">
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      className="text-lg font-medium text-muted-foreground hover:text-primary transition"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+
+                  {userInfo && (
+                    <Link
+                      href={dashboardRoute}
+                      className="text-lg font-medium text-muted-foreground hover:text-primary transition"
+                    >
+                      Dashboard
                     </Link>
                   )}
+
+                  <div className="mt-6 border-t pt-6">
+                    {accessToken ? (
+                      <LogoutButton />
+                    ) : (
+                      <Link href="/login">
+                        <Button className="w-full rounded-full">Login</Button>
+                      </Link>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>

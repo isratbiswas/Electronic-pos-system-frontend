@@ -46,12 +46,6 @@ export function OrderCreateForm({
   }, [state]);
   // Add Item to List
   const handleAddItem = () => {
-    // if (!newProduct || newQuantity <= 0 || newPrice <= 0) {
-    //   toast.error("Invalid item details!");
-    //   return;
-    // }
-    // toast.success("Order created Successfully");
-    // return;
     setItems([
       ...items,
       { product: newProduct, quantity: newQuantity, price: newPrice },
@@ -60,21 +54,6 @@ export function OrderCreateForm({
     setNewQuantity(1);
     setNewPrice(0);
   };
-
-  // Submit Order
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   if (!customerId || !customerName) {
-  //     toast.error("Customer details missing!");
-  //     return;
-  //   }
-
-  //   if (items.length === 0) {
-  //     toast.error("Add at least one item");
-  //     return;
-  //   }
-  // };
 
   return (
     <div

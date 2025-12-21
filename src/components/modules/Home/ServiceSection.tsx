@@ -1,5 +1,6 @@
 "use client";
 
+import SectionWrapper from "@/components/layout/SectionWrapper";
 import { motion } from "framer-motion";
 
 const services = [
@@ -7,86 +8,87 @@ const services = [
     icon: "📦",
     title: "Inventory Management",
     description:
-      "Keep track of stock levels, receive alerts for low stock, and manage product details effortlessly.",
+      "Track stock levels, get low-stock alerts, and manage products efficiently.",
   },
   {
     icon: "📊",
     title: "Sales & Reports",
     description:
-      "View daily, weekly, and monthly sales data with detailed analytics and performance charts.",
+      "Analyze daily, weekly, and monthly sales with powerful insights.",
   },
   {
     icon: "👥",
     title: "Customer Management",
     description:
-      "Maintain customer details, track purchase history, and reward loyal customers with ease.",
+      "Store customer data, track purchases, and reward loyal users.",
   },
   {
     icon: "💳",
     title: "Payment Solutions",
     description:
-      "Accept cash, card, mobile banking, and digital wallet payments smoothly and securely.",
+      "Accept cash, card, mobile banking, and digital wallets securely.",
   },
   {
     icon: "🧾",
     title: "Invoice & Billing",
     description:
-      "Generate printed or digital invoices instantly with tax, discount, and due tracking.",
+      "Generate invoices instantly with tax, discount, and due tracking.",
   },
   {
     icon: "🔐",
-    title: "User Roles & Security",
+    title: "Roles & Security",
     description:
-      "Secure system access with admin, cashier, and manager roles with advanced permissions.",
+      "Advanced role-based access for admins, managers, and cashiers.",
   },
 ];
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
-const ServiceSection = () => {
+export default function ServiceSection() {
   return (
-    <section className="py-20 px-6 bg-gradient-to-b from-white to-gray-50" id="services">
-      <div className="max-w-6xl mx-auto text-center mb-12">
-        <motion.h2
-          className="text-3xl sm:text-4xl font-bold text-indigo-500"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          Our Services
-        </motion.h2>
-        <motion.p
-          className="text-gray-600 mt-3 sm:text-lg"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-        >
-          Powerful tools and services to grow your business with speed and accuracy.
-        </motion.p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {services.map((service, index) => (
-          <motion.div
-            key={index}
-            className="p-6 bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-            variants={cardVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ delay: index * 0.1 }}
+    <SectionWrapper className="relative  bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+      <section id="services" className="">
+        <div className="max-w-6xl mx-auto text-center mb-16">
+          <motion.h2
+            className="text-4xl sm:text-5xl font-clash font-semibold text-blue-900"
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
           >
-            <div className="text-5xl mb-5 text-indigo-400">{service.icon}</div>
-            <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-            <p className="text-gray-600">{service.description}</p>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-};
+            Powerful Services
+          </motion.h2>
 
-export default ServiceSection;
+          <p className="mt-4 text-gray-600 max-w-2xl mx-auto font-inter">
+            Smart tools designed to help you manage, analyze, and grow your
+            business effortlessly.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 gap-8 max-w-6xl mx-auto">
+          {services.map((service, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="group relative bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="w-14 h-14 flex items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 to-purple-400 text-3xl mb-6 shadow-md group-hover:scale-110 transition">
+                {service.icon}
+              </div>
+
+              <h3 className="text-xl font-semibold font-clash mb-3">
+                {service.title}
+              </h3>
+
+              <p className="text-gray-600 font-inter leading-relaxed">
+                {service.description}
+              </p>
+
+              <span className="absolute inset-0 rounded-3xl ring-1 ring-transparent group-hover:ring-indigo-300 transition" />
+            </motion.div>
+          ))}
+        </div>
+      </section>
+    </SectionWrapper>
+  );
+}

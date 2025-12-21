@@ -7,6 +7,7 @@ interface ProfitProps {
 }
 
 const ProfitLossManage = ({ profits = [] }: ProfitProps) => {
+  console.log(profits, "profits-12");
   return (
     <div className="space-y-8">
       {profits.map((profit, index) => (
@@ -48,9 +49,7 @@ const ProfitLossManage = ({ profits = [] }: ProfitProps) => {
                     <th className="px-3 py-2 text-center text-green-600">
                       Profit
                     </th>
-                    <th className="px-3 py-2 text-center text-red-600">
-                      Loss
-                    </th>
+                    <th className="px-3 py-2 text-center text-red-600">Loss</th>
                   </tr>
                 </thead>
 
@@ -63,15 +62,9 @@ const ProfitLossManage = ({ profits = [] }: ProfitProps) => {
                       <td className="px-3 py-2 font-medium text-gray-800">
                         {item.productName}
                       </td>
-                      <td className="px-3 py-2">
-                        ${item.purchasePrice}
-                      </td>
-                      <td className="px-3 py-2">
-                        ${item.soldPrice}
-                      </td>
-                      <td className="px-3 py-2 text-center">
-                        {item.quantity}
-                      </td>
+                      <td className="px-3 py-2">${item.purchasePrice}</td>
+                      <td className="px-3 py-2">${item.soldPrice}</td>
+                      <td className="px-3 py-2 text-center">{item.quantity}</td>
                       <td className="px-3 py-2 text-center text-green-600 font-semibold">
                         ${item.profit}
                       </td>

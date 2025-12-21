@@ -4,11 +4,12 @@ import HowItWorksSection from "@/components/modules/Home/HowItWorksSection";
 import ReviewSection from "@/components/modules/Home/ReviewSection";
 import ServiceSection from "@/components/modules/Home/ServiceSection";
 import WhyChooseUs from "@/components/modules/Home/WhyChooseUs";
+import HeroBannar from "@/components/shered/HeroBannar";
 
 export default function Home() {
   return (
     <div className="">
-      <HeroSection />
+      <HeroBannar />
       <ServiceSection />
       <HowItWorksSection />
       <ReviewSection />

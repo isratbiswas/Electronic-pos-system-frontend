@@ -24,21 +24,22 @@ const DashboardSidebarContent = ({
 }: DashboardSidebarContentProps) => {
   const pathname = usePathname();
   return (
-    <div className="hidden md:flex h-full w-64 flex-col border-r bg-card">
+    <div className="hidden md:flex h-full w-64 flex-col border-r bg-card  bg-slate-950">
       {/* Logo/Brand */}
       <div className="flex h-16 items-center border-b px-6">
         <Link href={dashboardHome} className="flex items-center space-x-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-purple-600 text-white shadow-md">
-            <ShoppingBag size={18} />
+          <div className="flex h-9 w-9 items-center justify-center bg-indigo-600 rounded-xl text-white shadow">
+            <ShoppingBag className="" size={18} />
           </div>
-          <span className="text-lg font-bold tracking-wide">
-            Electronic<span className="text-primary">Shop</span>
+          <span className="text-xl font-bold tracking-wide">
+            <span className="text-cyan-800">Electronic</span>
+            <span className="ml-1 text-muted-foreground">Shop</span>
           </span>
         </Link>
       </div>
 
       {/* Navigation */}
-      <ScrollArea className="flex-1 px-3 py-4">
+      <ScrollArea className="flex-1 px-3 py-4  ">
         <nav className="space-y-6">
           {navItems.map((section: any, sectionIdx: any) => (
             <div key={sectionIdx}>
@@ -60,7 +61,7 @@ const DashboardSidebarContent = ({
                         "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all",
                         isActive
                           ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                          : "text-gray-400 hover:bg-accent hover:text-accent-foreground"
                       )}
                     >
                       <Icon className="h-4 w-4" />
@@ -89,12 +90,14 @@ const DashboardSidebarContent = ({
       <div className="border-t p-4">
         <div className="flex items-center gap-3">
           <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-            <span className="text-sm font-semibold text-primary">
+            <span className="text-sm font-semibold text-gray-50">
               {userInfo.name.charAt(0).toUpperCase()}
             </span>
           </div>
           <div className="flex-1 overflow-hidden">
-            <p className="text-sm font-medium truncate">{userInfo.name}</p>
+            <p className="text-base font-medium truncate text-cyan-800">
+              {userInfo.name}
+            </p>
             <p className="text-xs text-muted-foreground capitalize">
               {userInfo.role.toLowerCase()}
             </p>
