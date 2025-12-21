@@ -13,9 +13,10 @@ import DeleteConfirmDialog from "../products/DeleteProduct";
 interface Props {
   products: IProduct[];
   loading?: boolean;
+  userRole: "ADMIN" | "MANAGER" | "CASHIER";
 }
 
-const AllProduct = ({ products = [], loading = false }: Props) => {
+const AllProduct = ({ products = [], loading = false, userRole }: Props) => {
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
   const [productList, setProductList] = useState<IProduct[]>([]);
   const [modalType, setModalType] = useState<"view" | "edit" | null>(null);
@@ -98,7 +99,7 @@ const AllProduct = ({ products = [], loading = false }: Props) => {
       {/* Desktop Table */}
       <div className="overflow-x-auto rounded-lg shadow-lg border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200 font-sans text-gray-700 ">
-          <thead className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  text-white">
+          <thead className="bg-slate-600 text-indigo-200">
             <tr>
               <th className="px-6 py-3 text-left text-sm font-semibold tracking-wider">
                 #
@@ -151,7 +152,7 @@ const AllProduct = ({ products = [], loading = false }: Props) => {
                   </td>
                   <td className="px-6 py-4">{product.productAvailable}</td>
                   <td
-                    className={`px-6 py-2 text-center font-semibold rounded-full ${stockClass}`}
+                    className={`px-6 py-4 font-semibold rounded-full ${stockClass}`}
                   >
                     {product.stock ?? 0}
                   </td>
@@ -161,16 +162,20 @@ const AllProduct = ({ products = [], loading = false }: Props) => {
                       color="blue"
                       onClick={() => handleView(product)}
                     />
-                    <ActionButton
-                      label="Edit"
-                      color="green"
-                      onClick={() => handleEdit(product)}
-                    />
-                    <ActionButton
-                      label="Delete"
-                      color="red"
-                      onClick={() => setDeleteId(product._id)}
-                    />
+                    {(userRole === "ADMIN" || userRole === "MANAGER") && (
+                      <>
+                        <ActionButton
+                          label="Edit"
+                          color="green"
+                          onClick={() => handleEdit(product)}
+                        />
+                        <ActionButton
+                          label="Delete"
+                          color="red"
+                          onClick={() => setDeleteId(product._id)}
+                        />
+                      </>
+                    )}
                   </td>
                 </tr>
               );
@@ -189,7 +194,7 @@ const AllProduct = ({ products = [], loading = false }: Props) => {
               <span>Price:</span>
               <span>৳{product.purchasePrice ?? "N/A"}</span>
             </div>
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-sm ">
               <span>Stock:</span>
               <span>{product.stock ?? 0}</span>
             </div>

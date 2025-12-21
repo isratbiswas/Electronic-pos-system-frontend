@@ -125,6 +125,12 @@ export const cashierNavItems: NavSection[] = [
         roles: ["CASHIER"],
       },
       {
+        title: "All Product",
+        href: "/dashboard/allProduct",
+        icon: "ShoppingBag",
+        roles: ["CASHIER"],
+      },
+      {
         title: "Order Create",
         href: "/dashboard/createOrder",
         icon: "Wallet",

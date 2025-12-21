@@ -19,14 +19,14 @@ const GetAllOrders = ({ orderlist = [] }: IOrderProps) => {
     <div className="p-4">
       <div className="bg-white shadow-xl rounded-xl overflow-hidden">
         {/* Header */}
-   <div className="p-5 border-b bg-slate-950 text-center">
-  <h2 className="text-2xl font-bold text-indigo-400 tracking-wide">
-    All Orders
-  </h2>
-  <p className="text-gray-300 text-sm">
-    Manage and view all customer orders
-  </p>
-</div>
+        <div className="p-5 border-b bg-slate-600 text-center">
+          <h2 className="text-2xl font-bold text-indigo-400 tracking-wide">
+            All Orders
+          </h2>
+          <p className="text-gray-300 text-sm">
+            Manage and view all customer orders
+          </p>
+        </div>
 
         {/* Table Container */}
         <div className="overflow-x-auto mt-6">
@@ -58,21 +58,16 @@ const GetAllOrders = ({ orderlist = [] }: IOrderProps) => {
                     <td className="px-6 py-4">{order.customerName}</td>
                     <td className="px-6 py-4">{order.barcode}</td>
                     <td className="px-6 py-4">
-  {order.items.map((item, i) => (
-    <div key={i}>
-      {item.price}
-    </div>
-  ))}
-</td>
+                      {order.items.map((item, i) => (
+                        <div key={i}>{item.price}</div>
+                      ))}
+                    </td>
 
-<td className="px-12 py-4">
-  {order.items.map((item, i) => (
-    <div key={i}>
-      {item.quantity}
-    </div>
-  ))}
-</td>
-
+                    <td className="px-12 py-4">
+                      {order.items.map((item, i) => (
+                        <div key={i}>{item.quantity}</div>
+                      ))}
+                    </td>
 
                     <td className="px-6 py-4 font-semibold text-green-600">
                       ${order.totalAmount.toFixed(2)}
