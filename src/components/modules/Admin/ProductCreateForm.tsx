@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useActionState, useEffect } from "react";
-import { registerUser } from "@/services/auth/registerUser";
+
 import { toast } from "sonner";
 import { createProduct } from "@/services/admin/productManagement";
 

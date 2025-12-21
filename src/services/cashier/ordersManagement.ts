@@ -41,6 +41,7 @@ export const createOrder = async (
 
     const result = await res.json();
     console.log(result, "order-3");
+    return result;
   } catch (error: any) {
     console.log(error);
     return {

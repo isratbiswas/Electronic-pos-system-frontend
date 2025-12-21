@@ -1,51 +1,77 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useEffect, startTransition, useActionState } from "react";
+import { useState, useEffect, useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import { Field, FieldLabel, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 import { createOrder } from "@/services/cashier/ordersManagement";
 import { ICartItem } from "@/types/order";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export function OrderCreateForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [isChangeModalOpen, setIsChangeModalOpen] = useState(false);
   const [items, setItems] = useState<ICartItem[]>([]);
   const [paymentAmount, setPaymentAmount] = useState(0);
 
-  // Item fields
   const [newProduct, setNewProduct] = useState("");
   const [newQuantity, setNewQuantity] = useState(1);
   const [newPrice, setNewPrice] = useState(0);
 
   const [state, formAction, isPending] = useActionState(createOrder, null);
+  console.log(state, "state");
 
-  const [productId, setProductId] = useState("");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  // Total & Change Auto Calculated
   const totalAmount = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-  // console.log(totalAmount, items, "mira");
   const changeAmount = paymentAmount - totalAmount;
-  console.log(changeAmount, "eorejr");
+
+  // Show toast & reset form after successful creation
   useEffect(() => {
-    if (state?.success) {
-      toast.success("Order created Successfully");
-    } else if (state && !state.success && state.message) {
-      toast.error(state.message);
+    console.log("State:", state);
+    if (state) {
+      if (state?.success) {
+        toast.success("Order created successfully!");
+        console.log(state, "state-3");
+        // Reset all inputs and items
+        const timer = setTimeout(() => {
+          setItems([]);
+          setPaymentAmount(0);
+          setNewProduct("");
+          setNewQuantity(1);
+        }, 0);
+
+        return () => clearTimeout(timer);
+
+        // Optional: reset other input fields in the form
+        const form = document.querySelector("form");
+        form?.reset();
+      } else if (state && !state.success && state.message) {
+        toast.error(state.message);
+      }
     }
   }, [state]);
-  // Add Item to List
+
   const handleAddItem = () => {
+    if (!newProduct || newQuantity <= 0 || newPrice <= 0) {
+      toast.error("Please enter valid item details");
+      return;
+    }
+
     setItems([
       ...items,
       { product: newProduct, quantity: newQuantity, price: newPrice },
@@ -55,32 +81,33 @@ export function OrderCreateForm({
     setNewPrice(0);
   };
 
+  const handleRemoveItem = (index: number) => {
+    setItems(items.filter((_, i) => i !== index));
+  };
+
+  const handleShowChangeModal = () => {
+    if (paymentAmount > 0) {
+      setIsChangeModalOpen(true);
+    }
+  };
+
   return (
     <div
       className={cn(
-        "min-h-screen flex items-center justify-center bg-background p-4",
+        "min-h-screen flex items-center justify-center bg-gray-100 p-4",
         className
       )}
       {...props}
     >
-      <Card className="w-full max-w-2xl shadow-lg">
+      <Card className="w-full max-w-3xl shadow-xl rounded-xl">
         <CardContent className="p-6 md:p-8 space-y-6">
-          <h1 className="text-2xl font-bold text-center">Create Order</h1>
+          <h1 className="text-3xl font-bold text-center text-blue-900">
+            Create Order
+          </h1>
+
           <form
             action={async (formData: FormData) => {
-              // Build items array manually
-              const items = [
-                {
-                  product: productId,
-                  quantity: Number(quantity),
-                  price: Number(price),
-                },
-              ];
-
-              // Add items into FormData as JSON
               formData.append("items", JSON.stringify(items));
-
-              // Call server action
               await formAction(formData);
             }}
             className="space-y-6"
@@ -96,7 +123,6 @@ export function OrderCreateForm({
                   required
                 />
               </Field>
-
               <Field>
                 <FieldLabel htmlFor="customerName">Customer Name</FieldLabel>
                 <Input
@@ -106,12 +132,10 @@ export function OrderCreateForm({
                   required
                 />
               </Field>
-
               <Field>
                 <FieldLabel htmlFor="barcode">Barcode</FieldLabel>
                 <Input id="barcode" name="barcode" placeholder="1234567890" />
               </Field>
-
               <Field>
                 <FieldLabel htmlFor="paymentAmount">Payment Amount</FieldLabel>
                 <Input
@@ -124,54 +148,58 @@ export function OrderCreateForm({
               </Field>
             </FieldGroup>
 
-            {/* Add Item */}
-            <Card className="p-4 bg-gray-50">
-              <h2 className="font-semibold mb-3">Add Item</h2>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
-                <Field>
-                  <FieldLabel htmlFor="productId">Product ID</FieldLabel>
-                  <Input
-                    id="productId"
-                    placeholder="Product ID"
-                    value={productId}
-                    onChange={(e) => setProductId(e.target.value)}
-                    required
-                  />
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="quantity">Quantity</FieldLabel>
-                  <Input
-                    id="quantity"
-                    type="number"
-                    placeholder="Quantity"
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
-                  />
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="price">Price</FieldLabel>
-                  <Input
-                    id="price"
-                    type="number"
-                    placeholder="Price"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                  />
-                </Field>
-                <Button type="button" className="mt-8" onClick={handleAddItem}>
-                  Add Item
+            {/* Add Item Section */}
+            <Card className="bg-white p-4 shadow-inner rounded-lg">
+              <h2 className="text-xl font-semibold mb-3 text-gray-700">
+                Add Item
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <Input
+                  placeholder="Product"
+                  value={newProduct}
+                  onChange={(e) => setNewProduct(e.target.value)}
+                />
+                <Input
+                  type="number"
+                  placeholder="Quantity"
+                  value={newQuantity}
+                  onChange={(e) => setNewQuantity(Number(e.target.value))}
+                />
+                <Input
+                  type="number"
+                  placeholder="Price"
+                  value={newPrice}
+                  onChange={(e) => setNewPrice(Number(e.target.value))}
+                />
+                <Button
+                  type="button"
+                  onClick={handleAddItem}
+                  className="w-full bg-indigo-600  hover:bg-indigo-800"
+                >
+                  Add
                 </Button>
               </div>
-              {/* Show Items */}
+
+              {/* Item List */}
               {items.length > 0 && (
-                <ul className="mt-3 space-y-1">
+                <ul className="mt-4 divide-y divide-gray-200">
                   {items.map((item, idx) => (
-                    <li key={idx} className="flex justify-between text-sm">
-                      <span>{productId}</span>
+                    <li
+                      key={idx}
+                      className="flex justify-between items-center py-2"
+                    >
+                      <span className="font-medium">{item.product}</span>
                       <span>
-                        {quantity} × {price} ={" "}
-                        {Number(quantity) * Number(price)}
+                        {item.quantity} × {item.price} ={" "}
+                        {item.quantity * item.price}
                       </span>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleRemoveItem(idx)}
+                      >
+                        Remove
+                      </Button>
                     </li>
                   ))}
                 </ul>
@@ -179,45 +207,50 @@ export function OrderCreateForm({
             </Card>
 
             {/* Summary */}
-            <div className="space-y-1 font-medium">
-              <Field>
-                <FieldLabel htmlFor="price">Total Amount:</FieldLabel>
-                {/* <Input
-                  id="totalAmount"
-                  name="totalAmount"
-                  type="number"
-                  defaultValue={0}
-                /> */}
-                {price} * {quantity}= {Number(quantity) * Number(price)}
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="changeAmount">Change Amount:</FieldLabel>
-                {/* <Input
-                  id="changeAmount"
-                  name="changeAmount"
-                  type="number"
-                  className="none"
-                  defaultValue={0}
-                /> */}
-                {paymentAmount}-{price} * {quantity}
-              </Field>
-            </div>
+            <Card className="bg-gray-50 p-4 rounded-lg shadow-inner">
+              <div className="flex justify-between text-lg font-medium">
+                <span>Total Amount:</span>
+                <span>{totalAmount}</span>
+              </div>
+              <div className="flex justify-between text-lg font-medium mt-2">
+                <span>Change:</span>
+                <span
+                  className={
+                    changeAmount < 0 ? "text-red-500" : "text-green-600"
+                  }
+                >
+                  {changeAmount}
+                </span>
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={handleShowChangeModal}
+                  className="ml-2 bg-indigo-600 hover:bg-indigo-800"
+                >
+                  Show
+                </Button>
+              </div>
+            </Card>
 
-            <Button type="submit" className="w-full" disabled={isPending}>
+            <Button
+              type="submit"
+              className="w-full py-3 text-lg bg-indigo-600 hover:bg-indigo-800"
+              disabled={isPending}
+            >
               {isPending ? "Processing..." : "Create Order"}
             </Button>
           </form>
-          {/* Order Created Summary */}
+
+          {/* Order Summary */}
           {state?.success && state.data && (
-            <Card className="bg-green-50 p-4 mt-4">
-              <h3 className="font-bold">Order Summary</h3>
+            <Card className="bg-green-50 p-4 mt-4 rounded-lg shadow-inner">
+              <h3 className="font-bold text-lg mb-2">Order Summary</h3>
               <p>Customer: {state.data.customerName}</p>
               <p>Total: {state.data.totalAmount}</p>
-
-              <ul className="mt-2 text-sm">
+              <ul className="mt-2 text-sm divide-y divide-gray-200">
                 {state.data.items.map((item: any, idx: number) => (
-                  <li key={idx}>
-                    {item.product} - {quantity} × {price}
+                  <li key={idx} className="py-1">
+                    {item.product} - {item.quantity} × {item.price}
                   </li>
                 ))}
               </ul>
@@ -225,6 +258,20 @@ export function OrderCreateForm({
           )}
         </CardContent>
       </Card>
+      {/* Shadcn Modal for Change Amount */}
+      <Dialog open={isChangeModalOpen} onOpenChange={setIsChangeModalOpen}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Change Amount</DialogTitle>
+          </DialogHeader>
+          <div className="text-center text-2xl font-semibold py-4">
+            {changeAmount < 0 ? 0 : changeAmount}
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setIsChangeModalOpen(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
