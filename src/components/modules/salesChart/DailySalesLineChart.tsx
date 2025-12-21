@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import * as React from "react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import {
   Card,
@@ -9,7 +9,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
 import {
   ChartConfig,
@@ -18,7 +18,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
 import {
   Select,
@@ -26,12 +26,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
-import { IDailySales,  } from "@/types/product"
+import { IDailySales } from "@/types/product";
 
 interface Props {
-  data: IDailySales[]
+  data: IDailySales[];
 }
 
 const chartConfig = {
@@ -43,41 +43,36 @@ const chartConfig = {
     label: "Orders",
     color: "var(--chart-2)",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 const DailySalesAreaChart = ({ data }: Props) => {
-  const [timeRange, setTimeRange] = React.useState("90d")
+  const [timeRange, setTimeRange] = React.useState("90d");
 
   // ✅ sort by date (important)
   const sortedData = React.useMemo(() => {
     return [...data].sort(
-      (a, b) =>
-        new Date(a.date).getTime() - new Date(b.date).getTime()
-    )
-  }, [data])
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+  }, [data]);
 
   // ✅ filter by range
   const filteredData = React.useMemo(() => {
-    if (!sortedData.length) return []
+    if (!sortedData.length) return [];
 
-    const referenceDate = new Date(
-      sortedData[sortedData.length - 1].date
-    )
+    const referenceDate = new Date(sortedData[sortedData.length - 1].date);
 
-    let days = 90
-    if (timeRange === "30d") days = 30
-    if (timeRange === "7d") days = 7
+    let days = 90;
+    if (timeRange === "30d") days = 30;
+    if (timeRange === "7d") days = 7;
 
-    const startDate = new Date(referenceDate)
-    startDate.setDate(startDate.getDate() - days)
+    const startDate = new Date(referenceDate);
+    startDate.setDate(startDate.getDate() - days);
 
-    return sortedData.filter(
-      (item) => new Date(item.date) >= startDate
-    )
-  }, [sortedData, timeRange])
+    return sortedData.filter((item) => new Date(item.date) >= startDate);
+  }, [sortedData, timeRange]);
 
   return (
-    <Card className="pt-0">
+    <Card className="pt-0 mb-20">
       <CardHeader className="flex items-center gap-2 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
           <CardTitle>Daily Sales - Interactive</CardTitle>
@@ -100,10 +95,7 @@ const DailySalesAreaChart = ({ data }: Props) => {
       </CardHeader>
 
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="h-[280px] w-full"
-        >
+        <ChartContainer config={chartConfig} className="h-[280px] w-full">
           <AreaChart data={filteredData}>
             <defs>
               <linearGradient id="fillSales" x1="0" y1="0" x2="0" y2="1">
@@ -174,7 +166,7 @@ const DailySalesAreaChart = ({ data }: Props) => {
         </ChartContainer>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default  DailySalesAreaChart
+export default DailySalesAreaChart;
