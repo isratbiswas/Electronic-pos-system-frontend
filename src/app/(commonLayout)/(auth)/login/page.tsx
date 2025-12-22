@@ -1,4 +1,10 @@
-import { LoginForm } from "@/components/login-form"
+import { LoginForm } from "@/components/login-form";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Login | Pos System",
+  description: "Pos system by create next app for login page",
+};
 
 export default function LoginPage() {
   return (
@@ -7,5 +13,5 @@ export default function LoginPage() {
         <LoginForm />
       </div>
     </div>
-  )
+  );
 }

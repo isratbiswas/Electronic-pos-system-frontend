@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-
 import {
   Select,
   SelectContent,
@@ -13,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { createProduct } from "@/services/admin/productManagement";
@@ -25,6 +23,7 @@ export function ProductCreateForm({
 }: React.ComponentProps<"div">) {
   const [state, formAction, isPending] = useActionState(createProduct, null);
   const [rating, setRating] = useState("5");
+
   useEffect(() => {
     if (!state) return;
 
@@ -37,53 +36,48 @@ export function ProductCreateForm({
 
   return (
     <div
-      className={cn(
-        "min-h-screen flex items-center justify-center bg-background",
-        className
-      )}
+      className={cn("w-full px-4 md:px-10 py-6 bg-background", className)}
       {...props}
     >
-      <Card className="w-full max-w-2xl shadow-lg">
-        <CardContent className="p-6 md:p-8">
-          <form action={formAction} className="space-y-6">
+      <Card className="w-full shadow-md">
+        <CardContent className="p-6 md:p-10">
+          <form action={formAction} className="space-y-8">
             {/* Header */}
-            <div className="text-center space-y-1">
-              <h1 className="text-2xl font-bold">Create Product</h1>
+            <div className="space-y-1">
+              <h1 className="text-3xl font-bold text-blue-900">
+                Create Product
+              </h1>
               <p className="text-sm text-muted-foreground">
                 Add a new product to inventory
               </p>
             </div>
 
-            <FieldGroup>
+            {/* Form Grid */}
+            <FieldGroup className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Product Name */}
               <Field>
-                <FieldLabel htmlFor="name">Product Name</FieldLabel>
-                <Input
-                  id="name"
-                  name="name"
-                  placeholder="Electric Device"
-                  required
-                />
+                <FieldLabel htmlFor="name" className="text-gray-700">
+                  Product Name
+                </FieldLabel>
+                <Input id="name" name="name" required />
               </Field>
 
               {/* Category */}
               <Field>
-                <FieldLabel htmlFor="category">Category</FieldLabel>
-                <Input
-                  id="category"
-                  name="category"
-                  placeholder="Electronics"
-                  required
-                />
+                <FieldLabel htmlFor="category" className="text-gray-700">
+                  Category
+                </FieldLabel>
+                <Input id="category" name="category" required />
               </Field>
 
-              {/* Description */}
-              <Field>
-                <FieldLabel htmlFor="description">Description</FieldLabel>
+              {/* Description (Full Width) */}
+              <Field className="md:col-span-2">
+                <FieldLabel htmlFor="description" className="text-gray-700">
+                  Description
+                </FieldLabel>
                 <Textarea
                   id="description"
                   name="description"
-                  placeholder="Write product details, features, usage..."
                   rows={4}
                   required
                 />
@@ -91,38 +85,34 @@ export function ProductCreateForm({
 
               {/* Purchase Price */}
               <Field>
-                <FieldLabel htmlFor="purchasePrice">Purchase Price</FieldLabel>
+                <FieldLabel htmlFor="purchasePrice" className="text-gray-700">
+                  Purchase Price
+                </FieldLabel>
                 <Input
                   id="purchasePrice"
                   name="purchasePrice"
                   type="number"
-                  placeholder="1000"
                   required
                 />
               </Field>
 
               {/* Stock */}
               <Field>
-                <FieldLabel htmlFor="stock">Stock</FieldLabel>
-                <Input
-                  id="stock"
-                  name="stock"
-                  type="number"
-                  placeholder="10"
-                  defaultValue={0}
-                />
+                <FieldLabel htmlFor="stock" className="text-gray-700">
+                  Stock
+                </FieldLabel>
+                <Input id="stock" name="stock" type="number" defaultValue={0} />
               </Field>
 
               {/* Availability */}
               <Field>
-                <FieldLabel htmlFor="productAvailable">
+                <FieldLabel className="text-gray-700">
                   Product Availability
                 </FieldLabel>
                 <select
-                  id="productAvailable"
                   name="productAvailable"
-                  className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                   defaultValue="IN_STOCK"
+                  className="w-full rounded-md border px-3 py-2 text-sm"
                 >
                   <option value="IN_STOCK">In Stock</option>
                   <option value="OUT_OF_STOCK">Out of Stock</option>
@@ -132,16 +122,11 @@ export function ProductCreateForm({
 
               {/* Rating */}
               <Field>
-                <FieldLabel>Rating</FieldLabel>
-
+                <FieldLabel className="text-gray-700">Rating</FieldLabel>
                 <input type="hidden" name="rating" value={rating} />
-
-                <Select
-                  defaultValue="5"
-                  onValueChange={(value) => setRating(value)}
-                >
+                <Select defaultValue="5" onValueChange={setRating}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select rating" />
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="1">⭐ 1 Star</SelectItem>
@@ -155,13 +140,22 @@ export function ProductCreateForm({
 
               {/* Barcode */}
               <Field>
-                <FieldLabel htmlFor="barcode">Barcode</FieldLabel>
-                <Input id="barcode" name="barcode" placeholder="1234567890" />
+                <FieldLabel htmlFor="barcode" className="text-gray-700">
+                  Barcode
+                </FieldLabel>
+                <Input id="barcode" name="barcode" />
               </Field>
 
-              <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "Adding..." : "Add Product"}
-              </Button>
+              {/* Submit Button (Full Width) */}
+              <div className="md:col-span-2">
+                <Button
+                  type="submit"
+                  className="w-full bg-indigo-500 hover:bg-indigo-800"
+                  disabled={isPending}
+                >
+                  {isPending ? "Adding..." : "Add Product"}
+                </Button>
+              </div>
             </FieldGroup>
           </form>
         </CardContent>

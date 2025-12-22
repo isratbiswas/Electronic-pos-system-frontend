@@ -17,16 +17,17 @@ interface Props {
 }
 
 const AllProduct = ({ products = [], loading = false, userRole }: Props) => {
-  const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
   const [productList, setProductList] = useState<IProduct[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
   const [modalType, setModalType] = useState<"view" | "edit" | null>(null);
-  // ✅ Delete states
+
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
     setProductList(products);
   }, [products]);
+
   const handleView = (product: IProduct) => {
     setSelectedProduct(product);
     setModalType("view");
@@ -37,43 +38,17 @@ const AllProduct = ({ products = [], loading = false, userRole }: Props) => {
     setModalType("edit");
   };
 
-  // ✅ FINAL DELETE FUNCTION
-  // const handleDeleteConfirm = async () => {
-  //   if (!deleteId) return;
-
-  //   try {
-  //     setDeleteLoading(true);
-
-  //     const result = await deleteProduct(deleteId);
-  //     console.log(result, deleteId, "jis");
-
-  //     if (result?.success) {
-  //       setProductList((prev) =>
-  //         prev.filter((item) => item._id.toString() !== deleteId)
-  //       );
-
-  //       toast.success("Product deleted successfully");
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     toast.error("Delete failed");
-  //   } finally {
-  //     setDeleteLoading(false);
-  //     setDeleteId(null);
-  //   }
-  // };
-
   const handleDeleteConfirm = async () => {
     if (!deleteId) return;
+
     try {
       setDeleteLoading(true);
       const result = await deleteProduct(deleteId);
-      console.log(result);
+
       if (result?.success) {
         setProductList((prev) =>
           prev.filter((item) => item._id.toString() !== deleteId)
         );
-        setDeleteId(null);
         toast.success("Product deleted successfully");
       }
     } catch (error) {
@@ -91,77 +66,87 @@ const AllProduct = ({ products = [], loading = false, userRole }: Props) => {
   };
 
   if (loading) {
-    return <Skeleton />;
+    return <Skeleton className="h-[400px] w-full rounded-xl" />;
   }
 
   return (
-    <div className="bg-white rounded-xl shadow border">
-      {/* Desktop Table */}
-      <div className="overflow-x-auto rounded-lg shadow-lg border border-gray-200">
-        <table className="min-w-full divide-y divide-gray-200 font-sans text-gray-700 ">
-          <thead className="bg-slate-600 text-indigo-200">
+    <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden font-inter">
+      {/* ================= HEADER ================= */}
+      <div className="flex items-center justify-between px-6 py-4 bg-slate-600">
+        <h1 className="text-2xl font-semibold text-white tracking-wide">
+          📦 All Products
+        </h1>
+        <span className="text-base text-indigo-100">
+          Total : {productList.length}
+        </span>
+      </div>
+
+      {/* ================= DESKTOP TABLE ================= */}
+      <div className="hidden md:block overflow-x-auto">
+        <table className="min-w-full text-sm text-slate-700">
+          <thead className="bg-slate-100 sticky top-0 z-10">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold tracking-wider">
-                #
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold tracking-wider">
-                Barcode
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold tracking-wider">
-                Name
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold tracking-wider">
-                Category
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold tracking-wider">
-                Purchase Price
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold tracking-wider">
-                Available
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold tracking-wider">
-                Stock
-              </th>
-              <th className="px-6 py-3 text-center text-sm font-semibold tracking-wider">
-                Actions
-              </th>
+              {[
+                "#",
+                "Barcode",
+                "Name",
+                "Category",
+                "Purchase",
+                "Status",
+                "Stock",
+                "Actions",
+              ].map((head) => (
+                <th
+                  key={head}
+                  className="px-6 py-4 text-left  font-semibold text-slate-600 uppercase tracking-wider"
+                >
+                  {head}
+                </th>
+              ))}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {products.map((product, index) => {
-              let stockClass = "";
-              if (product.stock > 10) {
-                stockClass = "text-green-500  ";
-              } else if (product.stock > 0 && product.stock <= 10) {
-                stockClass = "text-yellow-500  ";
-              } else {
-                stockClass = "text-red-500  ";
-              }
+
+          <tbody className="divide-y ">
+            {productList.map((product, index) => {
+              const stockBadge =
+                product.stock > 25
+                  ? "bg-green-100 text-green-700"
+                  : product.stock > 10
+                  ? "bg-yellow-100 text-yellow-700"
+                  : "bg-red-100 text-red-700";
 
               return (
-                <tr
-                  key={product._id}
-                  className="hover:bg-gray-50 transition-all duration-200 cursor-pointer"
-                >
-                  <td className="px-6 py-4">{index + 1}</td>
-                  <td className="px-6 py-4">{product.barcode ?? "N/A"}</td>
-                  <td className="px-6 py-4 font-medium">{product.name}</td>
+                <tr key={product._id} className="hover:bg-indigo-50 transition">
+                  <td className="px-6 py-4 font-medium">{index + 1}</td>
+                  <td className="px-6 py-4 text-slate-500">
+                    {product.barcode ?? "—"}
+                  </td>
+                  <td className="px-6 py-4 font-semibold text-slate-800">
+                    {product.name}
+                  </td>
                   <td className="px-6 py-4">{product.category}</td>
                   <td className="px-6 py-4">
-                    {product.purchasePrice ?? "N/A"}
+                    ৳{product.purchasePrice ?? "N/A"}
                   </td>
-                  <td className="px-6 py-4">{product.productAvailable}</td>
-                  <td
-                    className={`px-6 py-4 font-semibold rounded-full ${stockClass}`}
-                  >
-                    {product.stock ?? 0}
+                  <td className="px-6 py-4">
+                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700">
+                      {product.productAvailable}
+                    </span>
                   </td>
-                  <td className="px-6 py-4 text-center space-x-2">
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${stockBadge}`}
+                    >
+                      {product.stock ?? 0}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2 text-center space-x-2">
                     <ActionButton
                       label="View"
                       color="blue"
                       onClick={() => handleView(product)}
                     />
+
                     {(userRole === "ADMIN" || userRole === "MANAGER") && (
                       <>
                         <ActionButton
@@ -184,19 +169,32 @@ const AllProduct = ({ products = [], loading = false, userRole }: Props) => {
         </table>
       </div>
 
-      {/* Mobile Card View */}
-      <div className="md:hidden divide-y">
-        {products.map((product) => (
-          <div key={product._id} className="p-4 space-y-2 border-b">
-            <div className="font-semibold">{product.name}</div>
-            <div className="text-sm text-gray-500">{product.category}</div>
-            <div className="flex justify-between text-sm">
-              <span>Price:</span>
-              <span>৳{product.purchasePrice ?? "N/A"}</span>
+      {/* ================= MOBILE CARD VIEW ================= */}
+      <div className="md:hidden p-4 space-y-4">
+        {productList.map((product) => (
+          <div
+            key={product._id}
+            className="bg-white rounded-xl shadow border p-4 space-y-3"
+          >
+            <div className="flex justify-between items-center">
+              <h2 className="font-semibold text-slate-800">{product.name}</h2>
+              <span className="text-xs px-2 py-1 rounded-full bg-indigo-100 text-indigo-700">
+                {product.productAvailable}
+              </span>
             </div>
-            <div className="flex justify-between text-sm ">
-              <span>Stock:</span>
-              <span>{product.stock ?? 0}</span>
+
+            <p className="text-sm text-slate-500">{product.category}</p>
+
+            <div className="flex justify-between text-sm">
+              <span>Purchase Price</span>
+              <span className="font-medium">
+                ৳{product.purchasePrice ?? "N/A"}
+              </span>
+            </div>
+
+            <div className="flex justify-between text-sm">
+              <span>Stock</span>
+              <span className="font-semibold">{product.stock ?? 0}</span>
             </div>
 
             <div className="flex gap-2 pt-2">
@@ -205,22 +203,26 @@ const AllProduct = ({ products = [], loading = false, userRole }: Props) => {
                 color="blue"
                 onClick={() => handleView(product)}
               />
-              <ActionButton
-                label="Edit"
-                color="green"
-                onClick={() => handleEdit(product)}
-              />
-              <ActionButton
-                label="Delete"
-                color="red"
-                onClick={() => setDeleteId(product._id)}
-              />
+              {(userRole === "ADMIN" || userRole === "MANAGER") && (
+                <>
+                  <ActionButton
+                    label="Edit"
+                    color="green"
+                    onClick={() => handleEdit(product)}
+                  />
+                  <ActionButton
+                    label="Delete"
+                    color="red"
+                    onClick={() => setDeleteId(product._id)}
+                  />
+                </>
+              )}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Modals */}
+      {/* ================= MODALS ================= */}
       {modalType === "view" && selectedProduct && (
         <ViewProductModal
           product={selectedProduct}
@@ -235,7 +237,7 @@ const AllProduct = ({ products = [], loading = false, userRole }: Props) => {
         />
       )}
 
-      {/* ✅ DELETE CONFIRMATION DIALOG */}
+      {/* ================= DELETE CONFIRM ================= */}
       <DeleteConfirmDialog
         open={!!deleteId}
         onClose={() => setDeleteId(null)}

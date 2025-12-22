@@ -1,5 +1,11 @@
 import DashboardNavbar from "@/components/modules/Dashboard/DashboardNavbar";
 import DashboardSideBar from "@/components/modules/Dashboard/DashboardSideBar";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "DashBoard |  Pos System",
+  description: "Pos system by create next app",
+};
 
 export const dynamic = "force-dynamic";
 const CommonDashboardLayout = async ({
