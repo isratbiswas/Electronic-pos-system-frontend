@@ -19,6 +19,8 @@ export const createProduct = async (
       stock: Number(formData.get("stock")),
       productAvailable: formData.get("productAvailable"),
       barcode: formData.get("barcode"),
+      description: formData.get("description"),
+      rating: Number(formData.get("rating")),
     };
     console.log(payload, "product-1");
 

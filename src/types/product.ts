@@ -1,38 +1,39 @@
 import { ProductAvailability } from "@/constants";
 
-export  interface IProduct {
-    _id: string,
-    name:string;
-    category: string;
-    purchasePrice:number;
-    stock:number;
-    barcode?:string;
-    productAvailable?: ProductAvailability;
-    // description: string;
-    // images?: string
+export interface IProduct {
+  _id: string;
+  name: string;
+  category: string;
+  purchasePrice: number;
+  stock: number;
+  barcode?: string;
+  productAvailable?: ProductAvailability;
+  description: string;
+  rating: number;
+  // images?: string
 }
 export interface IProfitItem {
-    productName: string;
-    purchasePrice: number;
-    soldPrice: number;
-    quantity: number;
-    profit:number;
-    loss: number;
+  productName: string;
+  purchasePrice: number;
+  soldPrice: number;
+  quantity: number;
+  profit: number;
+  loss: number;
 }
 export interface IProfit {
-    _id:string;
-   totalProfit:number;
-   totalLoss:number;
-   items: IProfitItem[]
+  _id: string;
+  totalProfit: number;
+  totalLoss: number;
+  items: IProfitItem[];
 }
 
-export interface IDailySales{
-     date: string;
-    totalSales: number;
-    orders:number
+export interface IDailySales {
+  date: string;
+  totalSales: number;
+  orders: number;
 }
-export interface IMonthlySales{
-     date: string;
-    totalSales: number;
-    orders:number
+export interface IMonthlySales {
+  date: string;
+  totalSales: number;
+  orders: number;
 }

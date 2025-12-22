@@ -9,7 +9,7 @@ import HeroBannar from "@/components/shered/HeroBannar";
 export default function Home() {
   return (
     <div className="">
-      <HeroBannar />
+      <HeroSection />
       <ServiceSection />
       <HowItWorksSection />
       <ReviewSection />

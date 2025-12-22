@@ -2,14 +2,33 @@
 
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Field, FieldGroup, FieldLabel, FieldDescription } from "@/components/ui/field";
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldDescription,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { loginUser } from "@/services/auth/loginUser";
 import { toast } from "sonner";
 import Link from "next/link";
+import Image from "next/image";
+import { Button } from "./ui/button";
 
-export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
+type LoginFormData = {
+  email: string;
+  password: string;
+};
+
+export function LoginForm({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  const [form, setForm] = useState<LoginFormData>({
+    email: "",
+    password: "",
+  });
   const [state, formAction, isPending] = useActionState(loginUser, null);
 
   useEffect(() => {
@@ -19,7 +38,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   return (
     <main
       className={cn(
-        "min-h-screen flex items-center justify-center w-full bg-gradient-to-br from-slate-900 to-indigo-950 px-4",
+        "min-h-screen flex items-center rounded-md justify-center w-full bg-gradient-to-br from-slate-900 to-indigo-950 px-4",
         className
       )}
       {...props}
@@ -32,16 +51,19 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
       >
         {/* LEFT IMAGE + INFO */}
         <div className="hidden md:block relative w-full">
-          <img
+          <Image
             src="https://i.pinimg.com/736x/6e/be/41/6ebe414a648740e757a10608601d768b.jpg"
             alt="Login Banner"
+            width={500}
+            height={500}
             className="absolute inset-0 h-full w-full object-cover brightness-50"
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-indigo-600 via-purple-600/70 to-indigo-500/70"></div>
           <div className="relative z-10 flex flex-col justify-center h-full p-12 text-white">
             <h2 className="text-3xl font-bold mb-4">Welcome Back 👋</h2>
             <p className="opacity-90">
-              Enter your credentials to access your POS dashboard. Fast, secure, and scalable.
+              Enter your credentials to access your POS dashboard. Fast, secure,
+              and scalable.
             </p>
           </div>
         </div>
@@ -70,6 +92,13 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   type="email"
                   placeholder="you@example.com"
                   required
+                  value={form.email}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      email: e.target.value,
+                    }))
+                  }
                   className="bg-slate-800 text-white border border-slate-700 focus:ring-indigo-500 focus:outline-none rounded-lg px-4 py-2 w-full"
                 />
               </Field>
@@ -77,9 +106,13 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
               {/* Password */}
               <Field>
                 <div className="flex items-center justify-between">
-                  <FieldLabel htmlFor="password" className="text-white font-medium">
+                  <FieldLabel
+                    htmlFor="password"
+                    className="text-white font-medium"
+                  >
                     Password
                   </FieldLabel>
+
                   <a
                     href="#"
                     className="text-sm text-indigo-400 hover:underline underline-offset-2 transition"
@@ -92,10 +125,49 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   name="password"
                   type="password"
                   placeholder="••••••••"
+                  value={form.password}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }))
+                  }
                   required
                   className="bg-slate-800 text-white border border-slate-700 focus:ring-indigo-500 focus:outline-none rounded-lg px-4 py-2 w-full"
                 />
               </Field>
+
+              <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:flex lg:flex-row lg:gap-8">
+                <Button
+                  className="bg-indigo-500 hover:bg-indigo-800 "
+                  type="button"
+                  onClick={() =>
+                    setForm({ email: "rakib@gmail.com", password: "A12345$" })
+                  }
+                >
+                  CASHIER
+                </Button>
+
+                <Button
+                  className="bg-indigo-500 hover:bg-indigo-800"
+                  type="button"
+                  onClick={() =>
+                    setForm({ email: "sira@gmail.com", password: "A12345$" })
+                  }
+                >
+                  MANAGER
+                </Button>
+
+                <Button
+                  className="bg-indigo-500 hover:bg-indigo-800 "
+                  type="button"
+                  onClick={() =>
+                    setForm({ email: "super@gmail.com", password: "1234567" })
+                  }
+                >
+                  ADMIN
+                </Button>
+              </div>
 
               {/* Login Button */}
               <Field>
@@ -112,7 +184,10 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
               <FieldDescription className="text-center text-slate-400 mt-2">
                 Don&apos;t have an account?{" "}
-                <Link href="/register" className="text-indigo-400 hover:text-red-800 transition-colors">
+                <Link
+                  href="/register"
+                  className="text-indigo-400 hover:text-red-800 transition-colors"
+                >
                   Sign up
                 </Link>
               </FieldDescription>

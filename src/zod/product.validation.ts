@@ -1,15 +1,10 @@
 import { ProductAvailability } from "@/constants";
 import { z } from "zod";
 
-
 export const productValidationZodSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Product name is required"),
+  name: z.string().min(1, "Product name is required"),
 
-  category: z
-    .string()
-    .min(1, "Category is required"),
+  category: z.string().min(1, "Category is required"),
 
   purchasePrice: z
     .number({ error: "Purchase price must be a number" })
@@ -24,7 +19,9 @@ export const productValidationZodSchema = z.object({
     .nativeEnum(ProductAvailability)
     .default(ProductAvailability.IN_STOCK),
 
-  barcode: z
-    .string()
-    .optional(),
+  description: z.string().min(15, "description is required"),
+  rating: z
+    .number({ error: "Rating must be a number" })
+    .min(0, "Rating must be a number"),
+  barcode: z.string().optional(),
 });

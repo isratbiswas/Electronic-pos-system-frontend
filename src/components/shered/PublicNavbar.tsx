@@ -56,7 +56,10 @@ const Navbar = async () => {
                 {item.label}
               </Link>
             ))}
+          </nav>
 
+          {/* Desktop Auth */}
+          <div className="hidden md:flex items-center gap-6">
             {userInfo && (
               <Link
                 href={dashboardRoute}
@@ -72,10 +75,6 @@ const Navbar = async () => {
                 Dashboard
               </Link>
             )}
-          </nav>
-
-          {/* Desktop Auth */}
-          <div className="hidden md:flex items-center gap-3">
             {accessToken ? (
               <LogoutButton />
             ) : (
