@@ -55,10 +55,10 @@ const DashboardNavbarContent = ({
         </Sheet>
         {/* search Bar */}
         <div className="flex-1">
-          <div className="relative">
+          {/* <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input type="search" placeholder="search..." className="pl-9" />
-          </div>
+          </div> */}
         </div>
         {/* right side actions */}
         <div className="flex items-center gap-2">

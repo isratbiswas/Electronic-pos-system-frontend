@@ -1,14 +1,7 @@
 "use client";
 
 import { motion, useAnimationControls } from "framer-motion";
-import {
-  Zap,
-  Boxes,
-  BarChart3,
-  Store,
-  Users,
-  ShieldCheck,
-} from "lucide-react";
+import { Zap, Boxes, BarChart3, Store, Users, ShieldCheck } from "lucide-react";
 import { useEffect } from "react";
 
 export default function FeaturesPage() {
@@ -85,7 +78,8 @@ export default function FeaturesPage() {
             Powerful POS Features
           </h1>
           <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
-            Designed for modern electronics stores that demand speed, control, and scalability.
+            Designed for modern electronics stores that demand speed, control,
+            and scalability.
           </p>
         </motion.div>
 
@@ -117,7 +111,144 @@ export default function FeaturesPage() {
             </motion.div>
           ))}
         </motion.div>
-                {/* CTA */}
+        {/* SECURITY & ACCESS FEATURES */}
+        <motion.section
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="mt-32"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-16">
+            Security & Role Management
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {[
+              {
+                title: "Role-Based Access",
+                desc: "Assign permissions for Admin, Manager, and Cashier to protect sensitive operations.",
+                icon: ShieldCheck,
+                gradient: "from-indigo-500 to-purple-500",
+              },
+              {
+                title: "Audit Logs",
+                desc: "Track every action including sales, refunds, and inventory changes.",
+                icon: BarChart3,
+                gradient: "from-emerald-500 to-teal-500",
+              },
+              {
+                title: "Secure Authentication",
+                desc: "Protected login with encrypted credentials and session control.",
+                icon: Users,
+                gradient: "from-orange-500 to-amber-500",
+              },
+            ].map((f, i) => (
+              <motion.div
+                key={i}
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="show"
+                transition={{ delay: i * 0.1 }}
+                className="bg-slate-900 rounded-2xl p-8"
+              >
+                <div
+                  className={`w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br ${f.gradient} text-white mb-6`}
+                >
+                  <f.icon className="w-7 h-7" />
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  {f.title}
+                </h3>
+                <p className="text-slate-400">{f.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* INVENTORY FEATURES */}
+        <motion.section
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="mt-32"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-16">
+            Inventory Intelligence
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              "Low Stock Alerts",
+              "Bulk Product Upload",
+              "Product Variants & SKU",
+              "Purchase & Cost Tracking",
+              "Stock Transfer Between Stores",
+              "Barcode & Scanner Support",
+              "Warranty Tracking",
+              "Real-Time Stock Sync",
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                className="bg-slate-900 rounded-xl p-6 text-slate-300"
+              >
+                <Boxes className="w-6 h-6 text-indigo-400 mb-3" />
+                <p className="font-medium">{item}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* SALES & ANALYTICS */}
+        <motion.section
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="mt-32"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-16">
+            Sales & Analytics
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {[
+              {
+                title: "Real-Time Sales Tracking",
+                desc: "Monitor sales performance instantly across all stores and counters.",
+              },
+              {
+                title: "Daily / Monthly Reports",
+                desc: "Detailed breakdown of revenue, profit, and order volume.",
+              },
+              {
+                title: "Top Products & Categories",
+                desc: "Identify best-selling products to optimize inventory.",
+              },
+              {
+                title: "Exportable Reports",
+                desc: "Download reports in CSV or PDF for accounting and analysis.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-slate-900 rounded-2xl p-8"
+              >
+                <BarChart3 className="w-8 h-8 text-indigo-400 mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-slate-400">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -136,7 +267,6 @@ export default function FeaturesPage() {
             Get Started
           </button>
         </motion.div>
-
       </div>
     </section>
   );

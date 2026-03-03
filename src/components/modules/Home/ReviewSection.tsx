@@ -17,7 +17,7 @@ const ReviewSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Review 1 */}
-          <div className="bg-gray-50 p-6 rounded-xl shadow hover:shadow-lg border-2 border-red-900 transition">
+          <div className="bg-gray-50 p-6 rounded-xl shadow hover:shadow-lg border-1 border-indigo-900/20 transition">
             <div className="mb-4">⭐⭐⭐⭐⭐</div>
             <p className="text-gray-700 mb-4">
               “This POS system has transformed my business. Sales tracking and
@@ -39,7 +39,7 @@ const ReviewSection = () => {
           </div>
 
           {/* Review 2 */}
-          <div className="bg-gray-50 p-6 rounded-xl shadow hover:shadow-lg transition">
+          <div className="bg-gray-50 p-6 rounded-xl shadow hover:shadow-lg transition border-1  border-indigo-900/20">
             <div className="mb-4">⭐⭐⭐⭐</div>
             <p className="text-gray-700 mb-4">
               “Simple, fast, reliable. The profit reports help me understand my
@@ -61,7 +61,7 @@ const ReviewSection = () => {
           </div>
 
           {/* Review 3 */}
-          <div className="bg-gray-50 p-6 rounded-xl shadow hover:shadow-lg border-2 border-red-900 transition">
+          <div className="bg-gray-50 p-6 rounded-xl shadow hover:shadow-lg border-1  border-indigo-900/20 transition">
             <div className="mb-4">⭐⭐⭐⭐⭐</div>
             <p className="text-gray-700 mb-4">
               “Managing staff roles and invoices has never been this easy. Best

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
   Card,
@@ -10,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import {
   ChartConfig,
   ChartContainer,
@@ -19,7 +18,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
 import {
   Select,
   SelectContent,
@@ -27,42 +25,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { IDailySales } from "@/types/product";
 
 interface Props {
   data: IDailySales[];
 }
 
+// ✅ Updated with Indigo and Purple colors
 const chartConfig = {
   totalSales: {
-    label: "Total Sales",
-    color: "var(--chart-1)",
+    label: "Revenue",
+    color: "#6366f1", // Indigo-500
   },
   orders: {
     label: "Orders",
-    color: "var(--chart-2)",
+    color: "#a855f7", // Purple-500
   },
 } satisfies ChartConfig;
 
 const DailySalesAreaChart = ({ data }: Props) => {
-  const [timeRange, setTimeRange] = React.useState("90d");
+  const [timeRange, setTimeRange] = React.useState("30d");
 
-  // ✅ sort by date (important)
   const sortedData = React.useMemo(() => {
     return [...data].sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
   }, [data]);
 
-  // ✅ filter by range
   const filteredData = React.useMemo(() => {
     if (!sortedData.length) return [];
-
     const referenceDate = new Date(sortedData[sortedData.length - 1].date);
 
-    let days = 90;
-    if (timeRange === "30d") days = 30;
+    let days = 30;
+    if (timeRange === "90d") days = 90;
     if (timeRange === "7d") days = 7;
 
     const startDate = new Date(referenceDate);
@@ -72,96 +67,128 @@ const DailySalesAreaChart = ({ data }: Props) => {
   }, [sortedData, timeRange]);
 
   return (
-    <Card className="pt-0 mb-20">
+    <Card className="w-full shadow-xl border-muted/50 bg-card/50 backdrop-blur">
       <CardHeader className="flex items-center gap-2 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
-          <CardTitle>Daily Sales - Interactive</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight text-indigo-500">
+            Daily Sales Intelligence
+          </CardTitle>
           <CardDescription>
-            Sales & orders based on selected time range
+            Performance analytics: Revenue (Indigo) & Orders (Purple)
           </CardDescription>
         </div>
-
-        {/* ✅ Time Range Select */}
         <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger className="w-[160px] rounded-lg">
+          <SelectTrigger
+            className="w-[160px] rounded-lg bg-background/50"
+            aria-label="Select range"
+          >
             <SelectValue placeholder="Last 3 months" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-xl">
             <SelectItem value="90d">Last 3 months</SelectItem>
             <SelectItem value="30d">Last 30 days</SelectItem>
             <SelectItem value="7d">Last 7 days</SelectItem>
           </SelectContent>
         </Select>
       </CardHeader>
-
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer config={chartConfig} className="h-[280px] w-full">
-          <AreaChart data={filteredData}>
+        <ChartContainer config={chartConfig} className="h-[350px] w-full">
+          <AreaChart data={filteredData} margin={{ left: 12, right: 12 }}>
             <defs>
+              {/* Indigo Gradient */}
               <linearGradient id="fillSales" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
-                  stopColor="var(--color-totalSales)"
-                  stopOpacity={0.8}
+                  stopColor={chartConfig.totalSales.color}
+                  stopOpacity={0.4}
                 />
                 <stop
                   offset="95%"
-                  stopColor="var(--color-totalSales)"
-                  stopOpacity={0.1}
+                  stopColor={chartConfig.totalSales.color}
+                  stopOpacity={0}
                 />
               </linearGradient>
-
+              {/* Purple Gradient */}
               <linearGradient id="fillOrders" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
-                  stopColor="var(--color-orders)"
-                  stopOpacity={0.8}
+                  stopColor={chartConfig.orders.color}
+                  stopOpacity={0.4}
                 />
                 <stop
                   offset="95%"
-                  stopColor="var(--color-orders)"
-                  stopOpacity={0.1}
+                  stopColor={chartConfig.orders.color}
+                  stopOpacity={0}
                 />
               </linearGradient>
             </defs>
 
-            <CartesianGrid vertical={false} />
+            <CartesianGrid
+              vertical={false}
+              strokeDasharray="3 3"
+              className="stroke-muted/30" // Subtle grid lines
+            />
 
             <XAxis
               dataKey="date"
               tickLine={false}
               axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) =>
-                new Date(value).toLocaleDateString("en-US", {
+              tickMargin={12}
+              minTickGap={32}
+              tickFormatter={(value) => {
+                const date = new Date(value);
+                return date.toLocaleDateString("en-US", {
                   month: "short",
-                  year: "numeric",
-                })
+                  day: "numeric",
+                });
+              }}
+            />
+
+            <YAxis yAxisId="left" hide />
+            <YAxis yAxisId="right" hide />
+
+            <ChartTooltip
+              cursor={{
+                stroke: "hsl(var(--muted-foreground))",
+                strokeWidth: 1,
+              }}
+              content={
+                <ChartTooltipContent
+                  labelFormatter={(value) =>
+                    new Date(value).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  }
+                  indicator="line" // Changed to line for a cleaner professional look
+                />
               }
             />
 
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="dot" />}
-            />
-
+            {/* Indigo Revenue Area */}
             <Area
+              yAxisId="left"
               dataKey="totalSales"
-              type="natural"
+              type="monotone"
               fill="url(#fillSales)"
-              stroke="var(--color-totalSales)"
-              stackId="a"
+              stroke={chartConfig.totalSales.color}
+              strokeWidth={1} // Thicker stroke for visibility
+              animationDuration={1200}
             />
 
+            {/* Purple Orders Area */}
             <Area
+              yAxisId="right"
               dataKey="orders"
-              type="natural"
+              type="monotone"
               fill="url(#fillOrders)"
-              stroke="var(--color-orders)"
-              stackId="a"
+              stroke={chartConfig.orders.color}
+              strokeWidth={1} // Thicker stroke for visibility
+              animationDuration={1200}
             />
 
-            <ChartLegend content={<ChartLegendContent />} />
+            <ChartLegend content={<ChartLegendContent />} className="pt-6" />
           </AreaChart>
         </ChartContainer>
       </CardContent>

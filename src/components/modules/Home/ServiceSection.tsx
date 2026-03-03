@@ -1,7 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import SectionWrapper from "@/components/layout/SectionWrapper";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  Package,
+  BarChart3,
+  Users,
+  CreditCard,
+  Receipt,
+  ShieldCheck,
+  ArrowRight,
+} from "lucide-react";
 
 const services = [
   {
@@ -42,53 +52,64 @@ const services = [
   },
 ];
 
+const ServiceCard = ({ service, index }: { service: any; index: number }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className={`group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-8 transition-all hover:-translate-y-1 hover:shadow-md dark:border-slate-800 dark:bg-slate-950 ${service.className}`}
+    >
+      {/* Background Gradient Glow */}
+      <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-indigo-500/5 blur-3xl group-hover:bg-indigo-500/10 transition-colors" />
+
+      <div className="relative z-10">
+        <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 bg-indigo-200 hover:bg-indigo-400 group-hover:scale-110 transition-transform">
+          {service.icon}
+        </div>
+
+        <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+          {service.title}
+        </h3>
+        <p className="mt-3 text-slate-600 dark:text-slate-400 leading-relaxed">
+          {service.description}
+        </p>
+
+        <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity">
+          Learn more <ArrowRight size={14} />
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 export default function ServiceSection() {
   return (
-    <SectionWrapper className="relative  bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      <section id="services" className="">
-        <div className="max-w-6xl mx-auto text-center mb-16">
-          <motion.h2
-            className="text-4xl sm:text-5xl font-clash font-semibold text-blue-900"
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            Powerful Services
-          </motion.h2>
-
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto font-inter">
-            Smart tools designed to help you manage, analyze, and grow your
-            business effortlessly.
+    <SectionWrapper className="bg-slate-50/50 dark:bg-slate-950 py-24">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-16 text-center">
+          <motion.span className="text-sm font-bold uppercase tracking-widest text-indigo-600">
+            Our Expertise
+          </motion.span>
+          <h2 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
+            Powerful{" "}
+            <span className="bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-transparent">
+              Commerce Tools
+            </span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
+            Smart, integrated solutions designed to help you manage and grow
+            your business with 2025 technology.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300"
-            >
-              <div className="w-14 h-14 flex items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 to-purple-400 text-3xl mb-6 shadow-md group-hover:scale-110 transition">
-                {service.icon}
-              </div>
-
-              <h3 className="text-xl font-semibold font-clash mb-3">
-                {service.title}
-              </h3>
-
-              <p className="text-gray-600 font-inter leading-relaxed">
-                {service.description}
-              </p>
-
-              <span className="absolute inset-0 rounded-3xl ring-1 ring-transparent group-hover:ring-indigo-300 transition" />
-            </motion.div>
+            <ServiceCard key={index} service={service} index={index} />
           ))}
         </div>
-      </section>
+      </div>
     </SectionWrapper>
   );
 }

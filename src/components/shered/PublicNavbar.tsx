@@ -1,12 +1,17 @@
-import { Menu, ShoppingBag } from "lucide-react";
+import { Menu, ShoppingBag, LayoutDashboard, User, LogIn } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getCookie } from "@/services/auth/tokenHandlers";
 import LogoutButton from "./LogoutButton";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+  SheetHeader,
+} from "../ui/sheet";
 import { getUserInfo } from "@/services/auth/getUserInfo";
 import { getDefaultDashboardRoute } from "@/lib/auth-utils";
-// import NavbarAuthButtons from "./NavbarAuthButtons";
 
 const Navbar = async () => {
   const navItems = [
@@ -23,122 +28,119 @@ const Navbar = async () => {
     : "/";
 
   return (
-    <header className="sticky top-6 z-50">
-      {/* Floating Container */}
-      <div className="relative mx-auto max-w-7xl rounded-full border  border-border/50 bg-background/70 backdrop-blur-xl shadow-lg">
-        <div className="flex h-16 items-center justify-between px-8">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center bg-indigo-600 rounded-xl text-white shadow">
-              <ShoppingBag className="" size={18} />
+    <header className="fixed top-4 inset-x-0 z-50 px-4">
+      {/* Floating Container with Glassmorphism */}
+      <div className="mx-auto max-w-7xl rounded-full border border-white/20 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]">
+        <div className="flex h-14 items-center justify-between px-6 lg:px-8">
+          {/* Logo Section */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="flex h-8 w-8 items-center justify-center bg-gradient-to-br from-indigo-600 to-cyan-500 rounded-lg text-white transition-transform group-hover:scale-110">
+              <ShoppingBag size={18} />
             </div>
-            <span className="text-xl font-bold tracking-wide">
-              <span className="text-cyan-800">Electronic</span>
-              <span className="ml-1 text-muted-foreground">Shop</span>
+            <span className="text-lg font-bold tracking-tight">
+              <span className="bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent">
+                Electro
+              </span>
+              <span className="text-slate-600 dark:text-slate-400">Shop</span>
             </span>
           </Link>
 
-          {/* Center Desktop Navigation */}
-          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 text-sm font-medium">
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                className="
-                  relative text-muted-foreground transition
-                  hover:text-primary
-                  after:absolute after:-bottom-1 after:left-0
-                  after:h-[2px] after:w-0
-                  after:bg-primary after:transition-all
-                  hover:after:w-full
-                "
+                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors rounded-full hover:bg-slate-100/50"
               >
                 {item.label}
               </Link>
             ))}
           </nav>
 
-          {/* Desktop Auth */}
-          <div className="hidden md:flex items-center gap-6">
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3">
             {userInfo && (
-              <Link
-                href={dashboardRoute}
-                className="
-                  relative text-muted-foreground transition
-                  hover:text-primary
-                  after:absolute after:-bottom-1 after:left-0
-                  after:h-[2px] after:w-0
-                  after:bg-primary after:transition-all
-                  hover:after:w-full
-                "
-              >
-                Dashboard
+              <Link href={dashboardRoute} className="hidden md:flex">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-2 rounded-full text-slate-600"
+                >
+                  <LayoutDashboard size={16} />
+                  Dashboard
+                </Button>
               </Link>
             )}
+
+            <div className="h-6 w-px bg-slate-200 hidden md:block" />
+
             {accessToken ? (
-              <LogoutButton />
+              <div className="flex items-center gap-2">
+                <LogoutButton />
+              </div>
             ) : (
               <Link href="/login">
                 <Button
-                  className="
-                    rounded-full px-6
-                    bg-gradient-to-r from-teal-400 to-cyan-500
-                    text-white font-semibold
-                    shadow-md
-                    hover:opacity-90
-                    transition
-                  "
+                  size="sm"
+                  className="rounded-full px-5 bg-indigo-600 hover:bg-indigo-700 shadow-sm"
                 >
+                  <LogIn className="mr-2" size={16} />
                   Login
                 </Button>
               </Link>
             )}
-          </div>
 
-          {/* Mobile Menu */}
-          <div className="md:hidden">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button size="icon" variant="outline" className="rounded-full">
-                  <Menu />
-                </Button>
-              </SheetTrigger>
+            {/* Mobile Menu Toggle */}
+            <div className="md:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button size="icon" variant="ghost" className="rounded-full">
+                    <Menu size={20} />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent
+                  side="right"
+                  className="rounded-l-3xl border-none"
+                >
+                  <div className="flex flex-col gap-4">
+                    {navItems.map((item) => (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        className="text-lg font-semibold px-4 py-3 rounded-2xl hover:bg-slate-50 transition"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
 
-              <SheetContent side="right" className="w-[320px] p-6">
-                <SheetTitle className="sr-only">Navigation</SheetTitle>
+                    <div className="my-2 border-t border-slate-100" />
 
-                <div className="mt-10 flex flex-col gap-6">
-                  {navItems.map((item) => (
-                    <Link
-                      key={item.label}
-                      href={item.href}
-                      className="text-lg font-medium text-muted-foreground hover:text-primary transition"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-
-                  {userInfo && (
-                    <Link
-                      href={dashboardRoute}
-                      className="text-lg font-medium text-muted-foreground hover:text-primary transition"
-                    >
-                      Dashboard
-                    </Link>
-                  )}
-
-                  <div className="mt-6 border-t pt-6">
-                    {accessToken ? (
-                      <LogoutButton />
-                    ) : (
-                      <Link href="/login">
-                        <Button className="w-full rounded-full">Login</Button>
+                    {userInfo && (
+                      <Link
+                        href={dashboardRoute}
+                        className="flex items-center gap-3 text-lg font-semibold px-4 py-3 rounded-2xl text-indigo-600 bg-indigo-50"
+                      >
+                        <LayoutDashboard size={20} />
+                        Dashboard
                       </Link>
                     )}
+
+                    <div className="mt-4">
+                      {accessToken ? (
+                        <LogoutButton />
+                      ) : (
+                        <Link href="/login" className="w-full">
+                          <Button className="w-full rounded-2xl h-12 text-lg">
+                            Login
+                          </Button>
+                        </Link>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
       </div>

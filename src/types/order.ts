@@ -4,17 +4,24 @@ export interface ICartItem {
   price: number;
 }
 
-export interface IOrderPayload  {
-  _id:string,
-  customerId:string,
-  customerName: string,
+export interface IOrderPayload {
+  _id: string;
+  customerId: string;
+  customerName: string;
   // name:string,
   // category:string,
-  barcode:string,
+  barcode: string;
   items: ICartItem[];
   totalAmount: number;
   totalSellAmount: number;
   paymentAmount: number;
   changeAmount: number;
-  createdAt: string
+  createdAt: string;
 }
+
+export type OrderQueryParams = {
+  page?: number;
+  limit?: number;
+  startDate?: string;
+  endDate?: string;
+};

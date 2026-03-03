@@ -3,8 +3,7 @@ import { getCookie } from "@/services/auth/tokenHandlers";
 
 const BACKEND_API_URL =
   process.env.NEXT_BASE_API_URL ||
-  "https://pos-system-backend-one.vercel.app/api/v1" ||
-  "http://localhost:5000/api/v1";
+  "https://pos-system-backend-one.vercel.app/api/v1";
 
 // auth/login
 

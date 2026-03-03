@@ -1,13 +1,48 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { getOrders } from "@/services/cashier/ordersManagement";
 import { IOrderPayload } from "@/types/order";
+import { useEffect, useState } from "react";
 
 interface IOrderProps {
   orderlist: IOrderPayload[];
+  initialMeta: any;
 }
 
-const GetAllOrders = ({ orderlist = [] }: IOrderProps) => {
-  // Convert date to readable Date + Time
+const GetAllOrders = ({ orderlist, initialMeta }: IOrderProps) => {
+  const [orders, setOrders] = useState(orderlist);
+  const [meta, setMeta] = useState(initialMeta);
+  const [page, setPage] = useState(1);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  // const fetchOrders = async () => {
+  //   const data = await getOrders({
+  //     page,
+  //     limit: 10,
+  //     startDate,
+  //     endDate,
+  //   });
+  //   setOrders(data.date);
+  //   setMeta(data.meta);
+  // };
+
+  useEffect(() => {
+    const loadOrders = async () => {
+      const data = await getOrders({
+        page,
+        limit: 10,
+        startDate,
+        endDate,
+      });
+
+      setOrders(data?.data ?? []);
+      setMeta(data?.meta ?? {});
+    };
+
+    loadOrders();
+  }, [page, startDate, endDate]);
   const formatDateTime = (date: string | Date) => {
     return new Date(date).toLocaleString("en-US", {
       dateStyle: "medium",
@@ -17,6 +52,24 @@ const GetAllOrders = ({ orderlist = [] }: IOrderProps) => {
 
   return (
     <div className="p-4">
+      <div className="flex gap-4 mb-4">
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => {
+            setPage(1);
+            setStartDate(e.target.value);
+          }}
+        />
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => {
+            setPage(1);
+            setEndDate(e.target.value);
+          }}
+        />
+      </div>
       <div className="bg-white shadow-xl rounded-xl overflow-hidden">
         {/* Header */}
         <div className="p-5 border-b bg-slate-600 text-center">
@@ -95,6 +148,25 @@ const GetAllOrders = ({ orderlist = [] }: IOrderProps) => {
               )}
             </tbody>
           </table>
+          <div className="flex gap-4 mt-4 items-center">
+            <button
+              disabled={page === 1}
+              onClick={() => setPage((prev) => prev - 1)}
+              className="px-4 py-2 bg-gray-200"
+            >
+              Prev
+            </button>
+            <span>
+              Page{meta?.page} of{meta?.totalPage}
+            </span>
+            <button
+              disabled={page === meta?.totalPage}
+              onClick={() => setPage((prev) => prev + 1)}
+              className="px-4 py-2 bg-gray-200"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
 

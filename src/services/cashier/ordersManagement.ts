@@ -2,12 +2,12 @@
 "use server";
 import { serverFetch } from "@/lib/server-fetch";
 import { zodValidator } from "@/lib/zodValidator";
-import { ICartItem } from "@/types/order";
+import { ICartItem, OrderQueryParams } from "@/types/order";
 import { orderZodSchema } from "@/zod/order.validation";
 
 export const createOrder = async (
   _prev: any,
-  formData: FormData
+  formData: FormData,
 ): Promise<any> => {
   try {
     //    const items : ICartItem[]= cartItems;
@@ -55,12 +55,26 @@ export const createOrder = async (
   }
 };
 
-export const getOrders = async () => {
+export const getOrders = async (params?: OrderQueryParams) => {
   try {
-    const response = await serverFetch.get("/sell/all-orders ", {
+    const queryString = params
+      ? `?${new URLSearchParams(
+          Object.entries(params).reduce(
+            (acc, [key, value]) => {
+              if (value !== undefined && value !== "") acc[key] = String(value);
+              return acc;
+            },
+            {} as Record<string, string>,
+          ),
+        ).toString()}`
+      : "";
+    const response = await serverFetch.get(`/sell/all-orders?${queryString}`, {
       cache: "no-store",
       next: { tags: ["order-list"] },
     });
+    if (!response.ok) {
+      throw new Error("Failed to fetch orders");
+    }
     // console.log(response, "mira-order");
     const result = await response.json();
     // console.log(result, "hero-order");

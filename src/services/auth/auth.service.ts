@@ -110,9 +110,9 @@ export async function getNewAccessToken() {
 export const updateProfile = async (payload: Partial<IUser>) => {
   try {
     const response = await serverFetch.patch(`/user/me`, {
-      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `${getCookie}`,
       },
       credentials: "include",
       body: JSON.stringify(payload),

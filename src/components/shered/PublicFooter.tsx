@@ -8,82 +8,130 @@ import {
   Instagram,
   Linkedin,
   ShoppingBag,
+  Mail,
+  ArrowRight,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function Footer() {
-  return (
-    <SectionWrapper className="bg-slate-950">
-      <footer className="text-gray-300 py-12 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-          {/* Brand */}
-          <div className="flex flex-col">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center bg-indigo-600 rounded-xl text-white shadow">
-                <ShoppingBag className="" size={18} />
-              </div>
-              <span className="text-xl font-bold tracking-wide">
-                <span className="text-cyan-400">Electronic</span>
-                <span className="ml-1 text-muted-foreground">Shop</span>
-              </span>
-            </Link>
+  const currentYear = new Date().getFullYear();
 
-            <p className="mt-4 text-sm leading-relaxed">
-              Fast, reliable & modern POS software for shops, restaurants, and
-              businesses.
-            </p>
-            <div className="flex mt-4 space-x-4">
-              <a href="#" className="hover:text-green-400 transition">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="hover:text-green-400 transition">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="hover:text-green-400 transition">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="hover:text-green-400 transition">
-                <Linkedin size={20} />
-              </a>
+  return (
+    <SectionWrapper className="bg-slate-950 border-t border-white/5">
+      <footer className="text-slate-400 py-16 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-16">
+            {/* Brand Column */}
+            <div className="flex flex-col gap-6 lg:col-span-1">
+              <Link href="/" className="flex items-center gap-2 group">
+                <div className="flex h-10 w-10 items-center justify-center bg-indigo-600 rounded-xl text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+                  <ShoppingBag size={20} />
+                </div>
+                <span className="text-xl font-bold tracking-tight">
+                  <span className="text-white">Electro</span>
+                  <span className="text-indigo-400">Shop</span>
+                </span>
+              </Link>
+              <p className="text-sm leading-relaxed max-w-xs">
+                Empowering businesses with modern POS solutions. Fast, reliable,
+                and built for the next generation of commerce.
+              </p>
+              <div className="flex space-x-3">
+                {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
+                  <a
+                    key={i}
+                    href="#"
+                    className="h-9 w-9 flex items-center justify-center rounded-full bg-slate-900 border border-slate-800 hover:border-indigo-500 hover:text-white transition-all duration-300"
+                  >
+                    <Icon size={18} />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Links Columns */}
+            <div className="grid grid-cols-2 gap-8 lg:col-span-2">
+              <div>
+                <h3 className="text-white font-semibold mb-6 uppercase tracking-wider text-xs">
+                  Solutions
+                </h3>
+                <ul className="space-y-4 text-sm">
+                  {[
+                    "Inventory",
+                    "Sales Analytics",
+                    "Multi-shop",
+                    "Customer CRM",
+                  ].map((link) => (
+                    <li key={link}>
+                      <Link
+                        href="#"
+                        className="hover:text-indigo-400 transition-colors"
+                      >
+                        {link}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-white font-semibold mb-6 uppercase tracking-wider text-xs">
+                  Company
+                </h3>
+                <ul className="space-y-4 text-sm">
+                  {["About Us", "Features", "Contact", "Privacy Policy"].map(
+                    (link) => (
+                      <li key={link}>
+                        <Link
+                          href="#"
+                          className="hover:text-indigo-400 transition-colors"
+                        >
+                          {link}
+                        </Link>
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+            </div>
+
+            {/* Newsletter Column */}
+            <div className="lg:col-span-1">
+              <h3 className="text-white font-semibold mb-6 uppercase tracking-wider text-xs">
+                Stay Updated
+              </h3>
+              <p className="text-sm mb-4">
+                Subscribe to get the latest updates and offers.
+              </p>
+              <div className="relative group">
+                <Input
+                  placeholder="Email address"
+                  className="bg-slate-900 border-slate-800 focus:border-indigo-500 rounded-lg pr-12 h-11"
+                />
+                <Button
+                  size="icon"
+                  className="absolute right-1 top-1 h-9 w-9 bg-indigo-600 hover:bg-indigo-500 rounded-md"
+                >
+                  <ArrowRight size={16} />
+                </Button>
+              </div>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold text-white mb-4">
-              Quick Links
-            </h3>
-            <ul className="space-y-2 text-sm">
-              {["Dashboard", "Products", "Sales", "Inventory", "Reports"].map(
-                (link) => (
-                  <li
-                    key={link}
-                    className="hover:text-green-400 cursor-pointer transition-colors duration-200"
-                  >
-                    {link}
-                  </li>
-                )
-              )}
-            </ul>
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium uppercase tracking-widest">
+            <p>© {currentYear} ElectroShop Systems. Built for 2025.</p>
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-slate-500">Systems Operational</span>
+              </div>
+              <p className="flex items-center gap-1">
+                <Mail size={12} className="text-indigo-400" />
+                support@electroshop.com
+              </p>
+            </div>
           </div>
-
-          {/* Contact */}
-          <div>
-            <h3 className="text-lg font-semibold text-white mb-4">Contact</h3>
-            <ul className="text-sm space-y-2">
-              <li>
-                Email: <span className="text-green-400">support@pos.com</span>
-              </li>
-              <li>
-                Phone: <span className="text-green-400">+880 1700-000000</span>
-              </li>
-              <li>Address: Dhaka, Bangladesh</li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom */}
-        <div className="border-t border-gray-700 mt-10 pt-5 text-center text-sm text-gray-400">
-          © {new Date().getFullYear()} POS System. All rights reserved.
         </div>
       </footer>
     </SectionWrapper>
