@@ -1,6 +1,6 @@
 # Electronic Shop POS System
 
-A modern, secure, and scalable Point of Sale (POS) system for electronic shops built with **Next.js, React, TypeScript, Node.js, Express, and MongoDB/PostgreSQL**. This system allows shop owners to efficiently manage sales, products, customers, and orders, providing real-time reporting and analytics.
+A modern, secure, and scalable Point of Sale (POS) system for electronic shops built with **Next.js, React, TypeScript, Node.js, Express, and MongoDB**. This system allows shop owners to efficiently manage sales, products, customers, and orders, providing real-time reporting and analytics.
 
 ---
 
